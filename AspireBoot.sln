@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{D12A4134-5A21-44A5-BB11-1895BC9DDCF6}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		LICENSE = LICENSE
+		NuGet.Config = NuGet.Config
+		README.md = README.md
+		stryker-config.json = stryker-config.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "GitHub", "GitHub", "{40D59927-525B-42F4-90B8-379437128F5B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WorkFlows", "WorkFlows", "{846FD0C8-84CC-4A3A-8EA6-24106C884D8E}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\cd.yml = .github\workflows\cd.yml
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireBoot.Api", "AspireBoot.Api\AspireBoot.Api.csproj", "{9D2E35AD-545A-4E7D-A272-E209D9287866}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireBoot.AppHost", "AspireBoot.AppHost\AspireBoot.AppHost.csproj", "{A7DD9547-6F5D-4DCC-AF97-A1D7F4961CDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireBoot.Domain", "AspireBoot.Domain\AspireBoot.Domain.csproj", "{F20EDAA8-67A3-4284-AD2F-4C56F5349E32}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireBoot.Infrastructure", "AspireBoot.Infrastructure\AspireBoot.Infrastructure.csproj", "{61F5C1D9-82AF-46FA-95FE-BE002925F660}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireBoot.ServiceDefaults", "AspireBoot.ServiceDefaults\AspireBoot.ServiceDefaults.csproj", "{511EE15A-2D05-4556-BF79-07B932186D1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireBoot.Tests.Integration", "AspireBoot.Tests.Integration\AspireBoot.Tests.Integration.csproj", "{685929A7-CEC7-452B-992D-FE36B2F33A34}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireBoot.Tests.Unit", "AspireBoot.Tests.Unit\AspireBoot.Tests.Unit.csproj", "{39AA5A18-DBCD-443D-8612-FB76737B229E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspireBoot.Worker", "AspireBoot.Worker\AspireBoot.Worker.csproj", "{DC8C2E8F-3864-470E-AF08-FFC1ABE641C5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A7DD9547-6F5D-4DCC-AF97-A1D7F4961CDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7DD9547-6F5D-4DCC-AF97-A1D7F4961CDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7DD9547-6F5D-4DCC-AF97-A1D7F4961CDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7DD9547-6F5D-4DCC-AF97-A1D7F4961CDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{511EE15A-2D05-4556-BF79-07B932186D1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{511EE15A-2D05-4556-BF79-07B932186D1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{511EE15A-2D05-4556-BF79-07B932186D1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{511EE15A-2D05-4556-BF79-07B932186D1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D2E35AD-545A-4E7D-A272-E209D9287866}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D2E35AD-545A-4E7D-A272-E209D9287866}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D2E35AD-545A-4E7D-A272-E209D9287866}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D2E35AD-545A-4E7D-A272-E209D9287866}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F20EDAA8-67A3-4284-AD2F-4C56F5349E32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F20EDAA8-67A3-4284-AD2F-4C56F5349E32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F20EDAA8-67A3-4284-AD2F-4C56F5349E32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F20EDAA8-67A3-4284-AD2F-4C56F5349E32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61F5C1D9-82AF-46FA-95FE-BE002925F660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61F5C1D9-82AF-46FA-95FE-BE002925F660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61F5C1D9-82AF-46FA-95FE-BE002925F660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61F5C1D9-82AF-46FA-95FE-BE002925F660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC8C2E8F-3864-470E-AF08-FFC1ABE641C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC8C2E8F-3864-470E-AF08-FFC1ABE641C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC8C2E8F-3864-470E-AF08-FFC1ABE641C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC8C2E8F-3864-470E-AF08-FFC1ABE641C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{685929A7-CEC7-452B-992D-FE36B2F33A34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{685929A7-CEC7-452B-992D-FE36B2F33A34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{685929A7-CEC7-452B-992D-FE36B2F33A34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{685929A7-CEC7-452B-992D-FE36B2F33A34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39AA5A18-DBCD-443D-8612-FB76737B229E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39AA5A18-DBCD-443D-8612-FB76737B229E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39AA5A18-DBCD-443D-8612-FB76737B229E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39AA5A18-DBCD-443D-8612-FB76737B229E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{40D59927-525B-42F4-90B8-379437128F5B} = {D12A4134-5A21-44A5-BB11-1895BC9DDCF6}
+		{846FD0C8-84CC-4A3A-8EA6-24106C884D8E} = {40D59927-525B-42F4-90B8-379437128F5B}
+	EndGlobalSection
+EndGlobal
