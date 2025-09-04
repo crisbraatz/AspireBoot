@@ -26,9 +26,9 @@ public static class AppSettings
     public static string JwtSecurityKey =>
         _configuration?["AspireBoot:Jwt.SecurityKey"] ?? "DEFAULT_256_BITS_JWT_SECURITY_KEY";
 
-    public static string RabbitSampleConsumerExchange =>
-        _configuration?["AspireBoot:Rabbit.SampleConsumer.Exchange"] ?? "sample-exchange";
+    public static string RabbitPingConsumerExchange =>
+        _configuration?["AspireBoot:Rabbit.PingConsumer.Exchange"] ?? "ping-exchange";
 
-    public static string RabbitSampleConsumerQueue =>
-        _configuration?["AspireBoot:Rabbit.SampleConsumer.Queue"] ?? "sample-queue";
+    public static string RabbitPingConsumerQueue =>
+        _configuration?["AspireBoot:Rabbit.PingConsumer.Queue"] ?? "ping-queue";
 }

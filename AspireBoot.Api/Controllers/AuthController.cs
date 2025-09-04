@@ -11,21 +11,6 @@ public class AuthController(IAuthService authService) : BaseController(authServi
 {
     private readonly IAuthService _authService = authService;
 
-    [HttpPost("dummy-call")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-    public async Task<IActionResult> DummyCall(CancellationToken token = default)
-    {
-        var validationResponse = await ValidateJwtAsync(token);
-        if (validationResponse.IsFailure)
-            return BuildResponse(BaseResponse<bool>.Failure(
-                validationResponse.ErrorCode, validationResponse.ErrorMessage));
-
-        var serviceResponse = await _authService.DummyCallAsync(token);
-        
-        return BuildResponse(new BaseResponse<string> { Data = serviceResponse.Data });
-    }
-
     [HttpPost("refresh-token")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -113,5 +98,20 @@ public class AuthController(IAuthService authService) : BaseController(authServi
         AppendRefreshToken(refreshTokenResponse.Data?.RefreshToken!);
 
         return BuildResponse(RefreshTokenResponse.ConvertFromDto(refreshTokenResponse));
+    }
+    
+    [HttpPost("test")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<IActionResult> TestAsync(CancellationToken token = default)
+    {
+        var validationResponse = await ValidateJwtAsync(token);
+        if (validationResponse.IsFailure)
+            return BuildResponse(BaseResponse<bool>.Failure(
+                validationResponse.ErrorCode, validationResponse.ErrorMessage));
+
+        var serviceResponse = await _authService.TestAsync(token);
+        
+        return BuildResponse(new BaseResponse<string> { Data = serviceResponse.Data });
     }
 }

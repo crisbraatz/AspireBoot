@@ -14,11 +14,6 @@ export class AuthService {
 
   }
 
-  dummyCall(): Observable<BaseResponse<string>> {
-    const headers = this.getAuthHeaders();
-    return this.http.post<BaseResponse<string>>(`${environment.baseUrl}${environment.endpoints.auth.dummyCall}`, {}, { headers, withCredentials: true });
-  }
-
   getAuthHeaders(): HttpHeaders {
     const token = this.getToken();
     return new HttpHeaders({
@@ -99,6 +94,11 @@ export class AuthService {
 
   signUp(data: { email: string; password: string }): Observable<RefreshTokenResponse> {
     return this.http.post<RefreshTokenResponse>(`${environment.baseUrl}${environment.endpoints.auth.signUp}`, data, { withCredentials: true });
+  }
+
+  test(): Observable<BaseResponse<string>> {
+    const headers = this.getAuthHeaders();
+    return this.http.post<BaseResponse<string>>(`${environment.baseUrl}${environment.endpoints.auth.test}`, {}, { headers, withCredentials: true });
   }
 
 }

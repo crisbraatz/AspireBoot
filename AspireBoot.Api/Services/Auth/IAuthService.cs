@@ -7,13 +7,12 @@ namespace AspireBoot.Api.Services.Auth;
 
 public interface IAuthService
 {
-    Task<BaseResponseDto<string>> DummyCallAsync(CancellationToken token = default);
-    
     Task<BaseResponseDto<RefreshTokenResponseDto>> RefreshTokenAsync(
         RefreshTokenRequestDto request, CancellationToken token = default);
 
     Task<BaseResponseDto<bool>> SignInAsync(SignInUserRequestDto request, CancellationToken token = default);
     Task<BaseResponseDto<bool>> SignOutAsync(RefreshTokenRequestDto request, CancellationToken token = default);
     Task<BaseResponseDto<bool>> SignUpAsync(SignUpUserRequestDto request, CancellationToken token = default);
+    Task<BaseResponseDto<string>> TestAsync(CancellationToken token = default);
     Task<ValidatorResponse> ValidateJwtAsync(string? request, CancellationToken token = default);
 }

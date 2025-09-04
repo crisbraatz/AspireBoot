@@ -14,9 +14,9 @@ public static class ServiceCollectionExtension
             var connectionFactory = x.GetRequiredService<IConnectionFactory>();
             var logger = x.GetRequiredService<ILogger<BaseConsumer<string>>>();
 
-            return new SampleConsumer(
-                exchange: AppSettings.RabbitSampleConsumerExchange,
-                queue: AppSettings.RabbitSampleConsumerQueue,
+            return new PingConsumer(
+                exchange: AppSettings.RabbitPingConsumerExchange,
+                queue: AppSettings.RabbitPingConsumerQueue,
                 connectionFactory,
                 logger);
         });

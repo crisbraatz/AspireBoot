@@ -4,7 +4,7 @@ using RabbitMQ.Client;
 
 namespace AspireBoot.Worker.Consumers;
 
-public class SampleConsumer(
+public class PingConsumer(
     string exchange,
     string queue,
     IConnectionFactory connectionFactory,
@@ -18,7 +18,7 @@ public class SampleConsumer(
         PingMeter.PingRequests.Add(1);
         
         _logger.LogInformation("{class}.{method} - Message {message} consumed.",
-            nameof(SampleConsumer), nameof(ProcessAsync), message);
+            nameof(PingConsumer), nameof(ProcessAsync), message);
 
         return Task.CompletedTask;
     }

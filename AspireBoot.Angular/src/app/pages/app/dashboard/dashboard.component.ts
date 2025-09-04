@@ -17,8 +17,8 @@ export class DashboardComponent {
 
   }
 
-  dummyCall(): void {
-    this.authService.dummyCall().subscribe({
+  test(): void {
+    this.authService.test().subscribe({
       next: (res) => {
         this.pingMessage = res.data!;
       },

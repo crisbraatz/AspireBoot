@@ -20,15 +20,6 @@ public class AuthService(
 {
     private const string RedisPrefix = "RefreshToken";
 
-    public async Task<BaseResponseDto<string>> DummyCallAsync(CancellationToken token = default)
-    {
-        const string pong = "Pong";
-        
-        await publisher.PublishAsync(AppSettings.RabbitSampleConsumerExchange, pong, token);
-        
-        return BaseResponseDto<string>.Success(pong);
-    }
-
     public async Task<BaseResponseDto<RefreshTokenResponseDto>> RefreshTokenAsync(
         RefreshTokenRequestDto request, CancellationToken token = default)
     {
@@ -179,6 +170,15 @@ public class AuthService(
         await usersRepository.Commit(token);
 
         return BaseResponseDto<bool>.Success();
+    }
+    
+    public async Task<BaseResponseDto<string>> TestAsync(CancellationToken token = default)
+    {
+        const string pong = "Pong";
+        
+        await publisher.PublishAsync(AppSettings.RabbitPingConsumerExchange, pong, token);
+        
+        return BaseResponseDto<string>.Success(pong);
     }
 
     public async Task<ValidatorResponse> ValidateJwtAsync(string? request, CancellationToken token = default)

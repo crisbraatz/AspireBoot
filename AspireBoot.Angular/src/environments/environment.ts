@@ -3,7 +3,7 @@ export const environment = {
   baseUrl: 'https://localhost:5100/api',
   endpoints: {
     auth: {
-      dummyCall: '/auth/dummy-call',
+      test: '/auth/test',
       refreshToken: '/auth/refresh-token',
       signIn: '/auth/signin',
       signOut: '/auth/signout',
