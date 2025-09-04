@@ -93,10 +93,13 @@ Feel free to remove it.
 
 This project is where the frontend resides.
 
-In the project root directory, execute the command:
+In the project root directory, execute the commands (one time only):
 
 ```bash
-ng serve
+mkdir ssl
+mkcert -key-file ssl/key.pem -cert-file ssl/cert.pem localhost 127.0.0.1 ::1;
 ```
+
+Then, execute the command `ng serve`.
 
 The frontend can be accessed at `https://localhost:4200`.
