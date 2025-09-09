@@ -2,20 +2,21 @@
 
 ## About
 
-Aspire Boot gives you a fully functional .NET Aspire template so you can go straight to business code.
+Aspire Boot is a fully functional .NET Aspire template designed to help you jump straight into business logic.
 
-It includes out of the box:
+It comes pre-configured with everything you need to build scalable, observable and modern applications.
 
-- A Web API built with C# / .NET 9.0
-    - JWT authentication and authorization with refresh token
-    - Integration / unit / mutation tests with XUnit and Stryker frameworks
-- A Worker built with C# / .NET 9.0
-- A responsive Angular 20 application
-- A Postgres 17 database
-- A Redis 7 cache + Commander
-- A Rabbit 4 broker + Management
+Included out of the box:
 
-## Dependencies to execute the application locally
+- Web API and Worker built with C# / .NET 9.0
+    - JWT authentication and authorization with refresh tokens
+    - Integration, unit and mutation tests using XUnit and Stryker
+- Responsive Angular 20 frontend
+- Postgres 17 database
+- Rabbit 4 broker with Management UI
+- Redis 7 cache with Redis Commander
+
+## Prerequisites
 
 ### Backend:
 
@@ -26,82 +27,72 @@ It includes out of the box:
 
 - [Node.js 22](https://www.nodejs.tech/pt-br/download)
 
-## How to
+## Running the application locally
 
-### Execute the application locally?
+Trust HTTPS certificates by executing the command `dotnet dev-certs https --trust` (one-time setup).
 
-Execute the command `dotnet dev-certs https --trust` (one time only).
+Set up the frontend by executing the commands (one-time setup):
 
-In the .NET IDE, play/debug `AspireBoot.AppHost: https` profile.
+```bash
+mkdir ssl
+mkcert -key-file ssl/key.pem -cert-file ssl/cert.pem localhost 127.0.0.1 ::1;
+npm install
+```
 
-It will automatically open Aspire dashboard at `https://localhost:5000` which shows all resources:
+In the .NET IDE, run/debug the `AspireBoot.AppHost` project using the `https` profile.
 
-- The frontend can be accessed at `https://localhost:4200`
-- The Scalar API documentation can be accessed at `https://localhost:5001/scalar`
-- The Rabbit Management can be accessed at `http://localhost:15673`
-- The Redis Commander can be accessed at `http://localhost:6380`
+The Aspire dashboard will open at `https://localhost:5000`, showing all resources:
 
-### Migrate the database?
+- Frontend `https://localhost:4200`
+- Scalar API documentation `https://localhost:5001/scalar`
+- Rabbit Management UI `http://localhost:15673`
+- Redis Commander `http://localhost:6380`
 
-Execute the command `dotnet tool install -g dotnet-ef` (one time only).
+### Migrating the database
 
-Then, in the repository's root directory, execute the commands:
+Install EF Core CLI by executing the command `dotnet tool install -g dotnet-ef` (one-time setup).
+
+Run migrations by executing the commands:
 
 ```bash
 export ASPNETCORE_ENVIRONMENT=Migration
 dotnet ef -p AspireBoot.Infrastructure -s AspireBoot.Api migrations add MIGRATION_NAME
 ```
 
-The application is auto migrated in development environment.
+> Note: The application auto-applies migrations in development mode.
 
-## Key projects
+## Projects breakdown
 
 ### AspireBoot.AppHost
 
-The heart of a .NET Aspire application resides in this project.
+The central hub of any .NET Aspire application.
 
-The `AppHost.cs` file defines all resources and its details.
+The `AppHost.cs` file defines all resources and their configurations.
 
-If a resource is added/edited/removed, make sure the `appsettings.json` and `appsettings.Development.json` of all projects are adjusted (if needed).
+Keep `appsettings.json` and `appsettings.Development.json` files in sync across projects when modifying resources.
 
 ### AspireBoot.ServiceDefaults
 
-This project is responsible to inject everything that is default for a service, like observability and health checks.
+Injects default behaviors like observability, health checks and service discovery.
 
-If a new API or Worker is created, make sure it references this project and inject its methods so Aspire can do its magic.
+Ensure new APIs or Workers reference this project to benefit from Aspire's features.
 
 ### AspireBoot.Api
 
-This project ships out of the box an `AuthController` with five endpoints:
+Includes a ready-to-use `AuthController` with endpoints:
 
+- SignIn, SignOut and SignUp
 - RefreshToken with Redis cache
-- SignIn
-- SignOut
-- SignUp
-- Test (feel free to remove it)
-    - An endpoint for authenticated users to ping the worker project
+- Test endpoint to ping the worker (can be removed)
 
 ### AspireBoot.Worker
 
-This project enables consumption of messages sent by the API so it processes in the background.
+Handles background jobs triggered by the API.
 
-Great for sending emails, process reports or any kind of background job.
-
-Feel free to remove it.
+Ideal for tasks like sending emails, processing reports, etc.
 
 ### AspireBoot.Angular
 
-This project is where the frontend resides.
+Responsive frontend.
 
-In the project root directory, execute the commands (one time only):
-
-```bash
-mkdir ssl
-mkcert -key-file ssl/key.pem -cert-file ssl/cert.pem localhost 127.0.0.1 ::1;
-```
-
-Then, execute the command `npm install`.
-
-Finally, execute the command `ng serve`.
-
-The frontend can be accessed at `https://localhost:4200`.
+Access it at `https://localhost:4200` by executing the command `ng serve`.
