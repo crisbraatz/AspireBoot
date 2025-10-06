@@ -1,0 +1,6 @@
+@import url('../../shared/shared.component.css');
+
+.form-signup {
+  max-width: 330px;
+  padding: 1rem;
+}
