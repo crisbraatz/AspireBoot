@@ -6,6 +6,7 @@ using AspireBoot.Infrastructure.Redis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Npgsql;
 using RabbitMQ.Client;
 using Testcontainers.PostgreSql;
 using Testcontainers.RabbitMq;
@@ -46,7 +47,7 @@ public class IntegrationTestsFixture : IAsyncLifetime
     private void AddPostgres(ServiceCollection services)
     {
         services.AddDbContextPool<DatabaseContext>(x => x
-            .UseNpgsql(_postgres.GetConnectionString(), y =>
+            .UseNpgsql(new NpgsqlDataSourceBuilder(_postgres.GetConnectionString()).EnableDynamicJson().Build(), y =>
             {
                 y.MigrationsAssembly("AspireBoot.Infrastructure");
                 y.EnableRetryOnFailure();

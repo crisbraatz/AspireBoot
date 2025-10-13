@@ -33,7 +33,7 @@ export class SignUpComponent implements OnInit {
       ]],
       password1: ['', [
         Validators.required,
-        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,16}$')
+        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[a-zA-Z\d\W]{16,32}$/)
       ]],
       password2: ['', [Validators.required]]
     }, { validators: this.passwordsMatchValidator });

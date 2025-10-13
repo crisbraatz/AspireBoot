@@ -79,7 +79,7 @@ public class AuthServiceTests
     [Fact]
     public async Task SignIn_Should_sign_in()
     {
-        var request = new SignInUserRequestDto(IntegrationTestsFixture.RequestedBy, "Password123", string.Empty);
+        var request = new SignInUserRequestDto(IntegrationTestsFixture.RequestedBy, "StrongPassword123!", string.Empty);
         await _usersRepository.InsertOneAsync(new User(
                 IntegrationTestsFixture.RequestedBy,
                 IntegrationTestsFixture.RequestedBy.GetHashedPassword(request.Password)),
@@ -97,7 +97,7 @@ public class AuthServiceTests
     public async Task SignIn_Should_return_invalid_email_format_when_invalid_request()
     {
         var email = string.Empty;
-        var request = new SignInUserRequestDto(email, "Password123", email);
+        var request = new SignInUserRequestDto(email, "StrongPassword123!", email);
 
         var response = await _authService.SignInAsync(request, _fixture.Token);
 
@@ -110,7 +110,7 @@ public class AuthServiceTests
     public async Task SignIn_Should_return_authenticated_email_can_not_request_user_signin_when_invalid_request()
     {
         var request = new SignInUserRequestDto(
-            IntegrationTestsFixture.RequestedBy, "Password123", IntegrationTestsFixture.RequestedBy);
+            IntegrationTestsFixture.RequestedBy, "StrongPassword123!", IntegrationTestsFixture.RequestedBy);
 
         var response = await _authService.SignInAsync(request, _fixture.Token);
 
@@ -122,7 +122,7 @@ public class AuthServiceTests
     [Fact]
     public async Task SignIn_Should_return_invalid_password_format_for_email_when_invalid_request()
     {
-        var request = new SignInUserRequestDto(IntegrationTestsFixture.RequestedBy, "Password", string.Empty);
+        var request = new SignInUserRequestDto(IntegrationTestsFixture.RequestedBy, "StrongPassword", string.Empty);
 
         var response = await _authService.SignInAsync(request, _fixture.Token);
 
@@ -134,7 +134,7 @@ public class AuthServiceTests
     [Fact]
     public async Task SignIn_Should_return_email_not_found_when_invalid_request()
     {
-        var request = new SignInUserRequestDto(IntegrationTestsFixture.RequestedBy, "Password123", string.Empty);
+        var request = new SignInUserRequestDto(IntegrationTestsFixture.RequestedBy, "StrongPassword123!", string.Empty);
 
         var response = await _authService.SignInAsync(request, _fixture.Token);
 
@@ -146,10 +146,10 @@ public class AuthServiceTests
     [Fact]
     public async Task SignIn_Should_return_invalid_password_for_email_when_invalid_request()
     {
-        var request = new SignInUserRequestDto(IntegrationTestsFixture.RequestedBy, "Password123", string.Empty);
+        var request = new SignInUserRequestDto(IntegrationTestsFixture.RequestedBy, "StrongPassword123!", string.Empty);
         await _usersRepository.InsertOneAsync(new User(
                 IntegrationTestsFixture.RequestedBy,
-                IntegrationTestsFixture.RequestedBy.GetHashedPassword("Password1234")),
+                IntegrationTestsFixture.RequestedBy.GetHashedPassword("StrongPassword1234!")),
             _fixture.Token);
         await _fixture.CommitAsync();
 
@@ -190,7 +190,7 @@ public class AuthServiceTests
     [Fact]
     public async Task SignUp_Should_sign_up()
     {
-        var request = new SignUpUserRequestDto(IntegrationTestsFixture.RequestedBy, "Password123", string.Empty);
+        var request = new SignUpUserRequestDto(IntegrationTestsFixture.RequestedBy, "StrongPassword123!", string.Empty);
 
         var response = await _authService.SignUpAsync(request, _fixture.Token);
 
@@ -202,7 +202,7 @@ public class AuthServiceTests
     [Fact]
     public async Task SignUp_Should_return_invalid_email_format_when_invalid_request()
     {
-        var request = new SignUpUserRequestDto(string.Empty, "Password123", string.Empty);
+        var request = new SignUpUserRequestDto(string.Empty, "StrongPassword123!", string.Empty);
 
         var response = await _authService.SignUpAsync(request, _fixture.Token);
 
@@ -215,7 +215,7 @@ public class AuthServiceTests
     public async Task SignUp_Should_return_authenticated_email_can_not_request_user_sign_up_when_invalid_request()
     {
         var request = new SignUpUserRequestDto(
-            IntegrationTestsFixture.RequestedBy, "Password123", IntegrationTestsFixture.RequestedBy);
+            IntegrationTestsFixture.RequestedBy, "StrongPassword123!", IntegrationTestsFixture.RequestedBy);
 
         var response = await _authService.SignUpAsync(request, _fixture.Token);
 
@@ -227,8 +227,7 @@ public class AuthServiceTests
     [Fact]
     public async Task SignUp_Should_return_invalid_password_format_for_email_when_invalid_request()
     {
-        var request = new SignUpUserRequestDto(
-            IntegrationTestsFixture.RequestedBy, "Password", string.Empty);
+        var request = new SignUpUserRequestDto(IntegrationTestsFixture.RequestedBy, "StrongPassword", string.Empty);
 
         var response = await _authService.SignUpAsync(request, _fixture.Token);
 
@@ -240,11 +239,10 @@ public class AuthServiceTests
     [Fact]
     public async Task SignUp_Should_return_email_already_used_when_invalid_request()
     {
-        var request = new SignUpUserRequestDto(
-            IntegrationTestsFixture.RequestedBy, "Password123", string.Empty);
+        var request = new SignUpUserRequestDto(IntegrationTestsFixture.RequestedBy, "StrongPassword123!", string.Empty);
         await _usersRepository.InsertOneAsync(new User(
                 IntegrationTestsFixture.RequestedBy,
-                IntegrationTestsFixture.RequestedBy.GetHashedPassword("Password123")),
+                IntegrationTestsFixture.RequestedBy.GetHashedPassword("StrongPassword123!")),
             _fixture.Token);
         await _fixture.CommitAsync();
 

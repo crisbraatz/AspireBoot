@@ -17,8 +17,7 @@ namespace AspireBoot.Api.Controllers;
 [Route("api/[controller]")]
 public abstract class BaseController(IAuthService authService) : ControllerBase
 {
-    protected void AppendRefreshToken(string refreshToken)
-    {
+    protected void AppendRefreshToken(string refreshToken) =>
         Response.Cookies.Append("authRefreshToken", refreshToken, new CookieOptions
         {
             Domain = AppSettings.CookieDomain,
@@ -27,7 +26,6 @@ public abstract class BaseController(IAuthService authService) : ControllerBase
             SameSite = SameSiteMode.None,
             Secure = true
         });
-    }
 
     protected static IActionResult BuildResponse(BaseResponse response) =>
         new ObjectResult(response) { StatusCode = response.ErrorCode };

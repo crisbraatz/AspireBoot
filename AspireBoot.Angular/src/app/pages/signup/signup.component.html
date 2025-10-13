@@ -9,7 +9,7 @@
     <div class="form-floating">
       <input type="password" class="form-control" id="password1" placeholder="StrongPassword123!" formControlName="password1" [class.is-invalid]="submitted && password1?.invalid">
       <label for="password1">Password</label>
-      <div class="invalid-feedback my-1" *ngIf="submitted && password1?.invalid">Invalid password. Hint: at least one lowercase, one uppercase and one number. Between 8 and 16 characters.</div>
+      <div class="invalid-feedback my-1" *ngIf="submitted && password1?.invalid">Invalid password. Hint: at least one lowercase, one uppercase, one number and one special character. Between 16 and 32 characters.</div>
     </div>
     <div class="form-floating">
       <input type="password" class="form-control" id="password2" placeholder="StrongPassword123!" formControlName="password2" [class.is-invalid]="submitted && form.errors?.['passwordsMismatch']">

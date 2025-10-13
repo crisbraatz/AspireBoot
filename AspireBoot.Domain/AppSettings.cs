@@ -7,10 +7,7 @@ public static class AppSettings
 {
     private static IConfiguration? _configuration;
 
-    public static void Get(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    public static void Get(IConfiguration configuration) => _configuration = configuration;
 
     public static string AngularOrigin => _configuration?["AspireBoot:AngularOrigin"] ?? "https://localhost:4200";
     private static string AppEnvironment => _configuration?["AspireBoot:AppEnvironment"] ?? "development";

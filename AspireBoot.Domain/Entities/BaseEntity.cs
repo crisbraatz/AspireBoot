@@ -11,9 +11,6 @@ public abstract class BaseEntity
 
     protected BaseEntity(string requestedBy)
     {
-        if (string.IsNullOrWhiteSpace(requestedBy))
-            throw new ArgumentNullException(nameof(requestedBy));
-
         var dateTime = DateTime.UtcNow;
         Id = Guid.NewGuid();
         CreatedAt = dateTime;
@@ -25,18 +22,12 @@ public abstract class BaseEntity
 
     protected void SetActiveAs(bool active, string requestedBy)
     {
-        if (string.IsNullOrWhiteSpace(requestedBy))
-            throw new ArgumentNullException(nameof(requestedBy));
-
         SetUpdate(requestedBy);
         Active = active;
     }
 
     protected void SetUpdate(string requestedBy)
     {
-        if (string.IsNullOrWhiteSpace(requestedBy))
-            throw new ArgumentNullException(nameof(requestedBy));
-
         UpdatedAt = DateTime.UtcNow;
         UpdatedBy = requestedBy;
     }

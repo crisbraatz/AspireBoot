@@ -5,7 +5,7 @@ namespace AspireBoot.Tests.Unit.Api.Validators;
 
 public class PasswordValidatorTests
 {
-    private const string Password = "Example123";
+    private const string Password = "abc123-DEF456-ghi789";
 
     [Fact]
     public void Should_validate_password_format()
@@ -20,13 +20,18 @@ public class PasswordValidatorTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    [InlineData("Example")]
-    [InlineData("Example123Example123")]
-    [InlineData("example123")]
-    [InlineData("EXAMPLE123")]
-    [InlineData("ExampleE")]
-    [InlineData("12312312")]
-    [InlineData("Example123!")]
+    [InlineData("0123456789012345")]
+    [InlineData("exampleexampleex")]
+    [InlineData("EXAMPLEEXAMPLEEX")]
+    [InlineData("ExampleExampleEx")]
+    [InlineData("ExampleExample12")]
+    [InlineData("01234567890123456789012345678901")]
+    [InlineData("exampleexampleexampleexampleexam")]
+    [InlineData("EXAMPLEEXAMPLEEXAMPLEEXAMPLEEXAM")]
+    [InlineData("ExampleExampleExampleExampleExam")]
+    [InlineData("ExampleExampleExampleExample1234")]
+    [InlineData("abc123-DEF456-g")]
+    [InlineData("abc123-DEF456-ghi789-jkl012-mno34")]
     public void Should_return_error_validating_invalid_password_format(string? password)
     {
         var response = PasswordValidator.ValidateFormat(password);

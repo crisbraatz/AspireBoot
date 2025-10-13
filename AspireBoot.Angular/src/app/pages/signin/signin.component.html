@@ -9,7 +9,7 @@
     <div class="form-floating">
       <input type="password" class="form-control" id="password" placeholder="StrongPassword123!" formControlName="password" [class.is-invalid]="submitted && password?.invalid">
       <label for="password">Password</label>
-      <div class="invalid-feedback my-1" *ngIf="submitted && password?.invalid">Invalid password. Hint: at least one lowercase, one uppercase and one number. Between 8 and 16 characters.</div>
+      <div class="invalid-feedback my-1" *ngIf="submitted && password?.invalid">Invalid password. Hint: at least one lowercase, one uppercase, one number and one special character. Between 16 and 32 characters.</div>
     </div>
     <button class="btn btn-purple w-100 py-2" type="submit">SignIn</button>
     <div class="alert alert-danger mt-3" *ngIf="errorMessage">{{ errorMessage }}</div>

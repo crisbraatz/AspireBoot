@@ -9,6 +9,6 @@ public static partial class PasswordValidator
             ? ValidatorResponse.Failure(400, "Invalid password format.")
             : ValidatorResponse.Success();
 
-    [GeneratedRegex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$")]
+    [GeneratedRegex(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[a-zA-Z\d\W]{16,32}$")]
     private static partial Regex Regex();
 }

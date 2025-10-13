@@ -6,6 +6,7 @@ using AspireBoot.Infrastructure.Redis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Npgsql;
 using RabbitMQ.Client;
 
 namespace AspireBoot.Infrastructure;
@@ -26,7 +27,7 @@ public static class ServiceCollectionExtension
             throw new Exception("Postgres Connection String not found");
 
         services.AddDbContextPool<DatabaseContext>(x => x
-            .UseNpgsql(connectionString, y =>
+            .UseNpgsql(new NpgsqlDataSourceBuilder(connectionString).EnableDynamicJson().Build(), y =>
             {
                 y.MigrationsAssembly("AspireBoot.Infrastructure");
                 y.EnableRetryOnFailure();
