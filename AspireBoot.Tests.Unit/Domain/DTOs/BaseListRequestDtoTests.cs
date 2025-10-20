@@ -18,7 +18,6 @@ public class BaseListRequestDtoTests
     public void Should_create_dto_with_custom_values(int sentPage, int sentSize, int expectedPage, int expectedSize)
     {
         const string requestedBy = "RequestedBy";
-        var token = CancellationToken.None;
         var id = Guid.NewGuid();
         var createdAt = DateTime.UtcNow;
         const string createdBy = "CreatedBy";
@@ -26,7 +25,7 @@ public class BaseListRequestDtoTests
         const string updatedBy = "UpdatedBy";
         const bool active = true;
 
-        _dto = new DtoForTests(requestedBy, token)
+        _dto = new DtoForTests(requestedBy)
         {
             Filters = [x => x.Active],
             OrderBy = new Dictionary<string, bool> { { "id", true } },
@@ -43,7 +42,6 @@ public class BaseListRequestDtoTests
         _dto.Filters.Should().HaveCount(1);
         _dto.OrderBy.Should().HaveCount(1);
         _dto.RequestedBy.Should().Be(requestedBy);
-        _dto.Token.Should().Be(token);
         _dto.Page.Should().Be(expectedPage);
         _dto.Size.Should().Be(expectedSize);
         _dto.Id.Should().Be(id);
@@ -62,7 +60,6 @@ public class BaseListRequestDtoTests
         _dto.Filters.Should().BeEmpty();
         _dto.OrderBy.Should().BeEmpty();
         _dto.RequestedBy.Should().BeNull();
-        _dto.Token.Should().BeEquivalentTo(CancellationToken.None);
         _dto.Page.Should().Be(1);
         _dto.Size.Should().Be(10);
         _dto.Id.Should().BeNull();
@@ -73,8 +70,8 @@ public class BaseListRequestDtoTests
         _dto.Active.Should().BeNull();
     }
 
-    private class DtoForTests(string? requestedBy = null, CancellationToken token = default)
-        : BaseListRequestDto<EntityForTests>(requestedBy, token);
+    private class DtoForTests(string? requestedBy = null)
+        : BaseListRequestDto<EntityForTests>(requestedBy);
 
     private class EntityForTests(string requestedBy) : BaseEntity(requestedBy);
 }

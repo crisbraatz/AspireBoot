@@ -252,4 +252,43 @@ public class AuthServiceTests
         response.ErrorCode.Should().Be(409);
         response.ErrorMessage.Should().Be($"Email {request.Email} already used.");
     }
+
+    [Fact]
+    public async Task ValidateJwt_Should_validate_jwt()
+    {
+        await _usersRepository.InsertOneAsync(new User(
+                IntegrationTestsFixture.RequestedBy,
+                IntegrationTestsFixture.RequestedBy.GetHashedPassword("StrongPassword123!")),
+            _fixture.Token);
+        await _fixture.CommitAsync();
+
+        var response = await _authService.ValidateJwtAsync(IntegrationTestsFixture.RequestedBy, token: _fixture.Token);
+
+        response.IsFailure.Should().BeFalse();
+        response.ErrorCode.Should().BeNull();
+        response.ErrorMessage.Should().BeNullOrWhiteSpace();
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    public async Task ValidateJwt_Should_return_claim_not_found_in_request_headers_authorization(string? request)
+    {
+        var response = await _authService.ValidateJwtAsync(request, token: _fixture.Token);
+
+        response.IsFailure.Should().BeTrue();
+        response.ErrorCode.Should().Be(404);
+        response.ErrorMessage.Should().Be("Claim not found in request headers authorization.");
+    }
+
+    [Fact]
+    public async Task ValidateJwt_Should_return_unauthorized_access()
+    {
+        var response = await _authService.ValidateJwtAsync(IntegrationTestsFixture.RequestedBy, token: _fixture.Token);
+
+        response.IsFailure.Should().BeTrue();
+        response.ErrorCode.Should().Be(401);
+        response.ErrorMessage.Should().Be("Unauthorized access.");
+    }
 }

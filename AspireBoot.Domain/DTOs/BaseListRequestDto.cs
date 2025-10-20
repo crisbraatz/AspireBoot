@@ -3,13 +3,12 @@ using AspireBoot.Domain.Entities;
 
 namespace AspireBoot.Domain.DTOs;
 
-public abstract class BaseListRequestDto<T>(string? requestedBy = null, CancellationToken token = default)
+public abstract class BaseListRequestDto<T>(string? requestedBy = null)
     : BaseListDto where T : BaseEntity
 {
     public HashSet<Expression<Func<T, bool>>> Filters { get; init; } = [];
     public IDictionary<string, bool> OrderBy { get; init; } = new Dictionary<string, bool>();
     public string? RequestedBy { get; } = requestedBy;
-    public CancellationToken Token { get; } = token;
 
     public int Page
     {
