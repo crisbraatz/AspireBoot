@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { finalize, map, Observable, of, ReplaySubject, throwError } from 'rxjs';
 import { BaseResponse } from '../../models/base.response.model';
-import { RefreshTokenResponse } from '../../models/refresh-token.response.model';
+import { RefreshTokenResponse } from '../../models/auth/refresh-token.response.model';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -27,9 +27,9 @@ export class AuthService {
     return JSON.parse(atob(token.split('.')[1])).exp < Math.floor(Date.now() / 1000);
   }
 
-  refreshToken(): Observable<RefreshTokenResponse> {
+  refreshToken(): Observable<BaseResponse<RefreshTokenResponse>> {
     const headers = this.getAuthHeaders();
-    return this.http.post<RefreshTokenResponse>(`${environment.baseUrl}${environment.endpoints.auth.refreshToken}`, {}, { headers, withCredentials: true });
+    return this.http.post<BaseResponse<RefreshTokenResponse>>(`${environment.baseUrl}${environment.endpoints.auth.refreshToken}`, {}, { headers, withCredentials: true });
   }
 
   refreshTokenIfNeeded(): Observable<string> {
@@ -75,8 +75,8 @@ export class AuthService {
     localStorage.setItem('authToken', token);
   }
 
-  signIn(data: { email: string; password: string }): Observable<RefreshTokenResponse> {
-    return this.http.post<RefreshTokenResponse>(`${environment.baseUrl}${environment.endpoints.auth.signIn}`, data, { withCredentials: true });
+  signIn(data: { email: string; password: string }): Observable<BaseResponse<RefreshTokenResponse>> {
+    return this.http.post<BaseResponse<RefreshTokenResponse>>(`${environment.baseUrl}${environment.endpoints.auth.signIn}`, data, { withCredentials: true });
   }
 
   signOut(): Observable<BaseResponse> {
@@ -84,8 +84,8 @@ export class AuthService {
     return this.http.post<BaseResponse>(`${environment.baseUrl}${environment.endpoints.auth.signOut}`, {}, { headers, withCredentials: true });
   }
 
-  signUp(data: { email: string; password: string }): Observable<RefreshTokenResponse> {
-    return this.http.post<RefreshTokenResponse>(`${environment.baseUrl}${environment.endpoints.auth.signUp}`, data, { withCredentials: true });
+  signUp(data: { email: string; password: string }): Observable<BaseResponse<RefreshTokenResponse>> {
+    return this.http.post<BaseResponse<RefreshTokenResponse>>(`${environment.baseUrl}${environment.endpoints.auth.signUp}`, data, { withCredentials: true });
   }
 
   test(): Observable<BaseResponse<string>> {
