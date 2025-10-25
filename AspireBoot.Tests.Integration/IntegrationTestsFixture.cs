@@ -1,13 +1,8 @@
 using AspireBoot.Api;
+using AspireBoot.Infrastructure;
 using AspireBoot.Infrastructure.Postgres;
-using AspireBoot.Infrastructure.Postgres.Repositories;
-using AspireBoot.Infrastructure.Rabbit;
-using AspireBoot.Infrastructure.Redis;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Npgsql;
-using RabbitMQ.Client;
 using Testcontainers.PostgreSql;
 using Testcontainers.RabbitMq;
 using Testcontainers.Redis;
@@ -44,32 +39,6 @@ public class IntegrationTestsFixture : IAsyncLifetime
         await _context?.Database.EnsureCreatedAsync(Token)!;
     }
 
-    private void AddPostgres(ServiceCollection services)
-    {
-        services.AddDbContextPool<DatabaseContext>(x => x
-            .UseNpgsql(new NpgsqlDataSourceBuilder(_postgres.GetConnectionString()).EnableDynamicJson().Build(), y =>
-            {
-                y.MigrationsAssembly("AspireBoot.Infrastructure");
-                y.EnableRetryOnFailure();
-            }));
-        services.AddScoped(typeof(IBaseEntityRepository<>), typeof(BaseEntityRepository<>));
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
-    }
-
-    private void AddRabbit(IServiceCollection services)
-    {
-        services.AddSingleton<IConnectionFactory>(_ =>
-            new ConnectionFactory { Uri = new Uri(_rabbit.GetConnectionString()) });
-        services.AddSingleton<ConnectionProvider>();
-        services.AddSingleton<BasePublisher>();
-    }
-
-    private void AddRedis(IServiceCollection services)
-    {
-        services.AddStackExchangeRedisCache(x => x.Configuration = _redis.GetConnectionString());
-        services.AddScoped<IRedisRepository, RedisRepository>();
-    }
-
     public async Task InitializeAsync()
     {
         await _postgres.StartAsync(Token);
@@ -77,9 +46,9 @@ public class IntegrationTestsFixture : IAsyncLifetime
         await _redis.StartAsync(Token);
 
         var services = new ServiceCollection();
-        AddPostgres(services);
-        AddRabbit(services);
-        AddRedis(services);
+        services.AddPostgres(_postgres.GetConnectionString());
+        services.AddRabbit(_rabbit.GetConnectionString());
+        services.AddRedis(_redis.GetConnectionString());
         services.AddLogging(x => x.AddConsole());
         services.AddServices();
 
