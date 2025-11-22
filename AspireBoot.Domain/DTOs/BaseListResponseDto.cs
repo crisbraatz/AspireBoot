@@ -1,0 +1,17 @@
+namespace AspireBoot.Domain.DTOs;
+
+public class BaseListResponseDto<T>(IEnumerable<T> data, int currentPage, int size, int totalItems)
+{
+    public IEnumerable<T> Data { get; } = data;
+    public int CurrentPage { get; } = currentPage;
+    public int TotalPages { get; } = (int)Math.Ceiling((double)(totalItems > 0 ? totalItems : 1) / size);
+    public int TotalItems { get; } = totalItems;
+
+    public BaseListResponseDto(T data) : this(new List<T> { data }, 1, 1, 1)
+    {
+    }
+
+    public BaseListResponseDto() : this([], 1, 1, 0)
+    {
+    }
+}

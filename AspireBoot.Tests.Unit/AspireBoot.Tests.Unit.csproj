@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector"/>
+    <PackageReference Include="FluentAssertions"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+    <PackageReference Include="NBuilder"/>
+    <PackageReference Include="xunit"/>
+    <PackageReference Include="xunit.runner.visualstudio"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AspireBoot.ApiService\AspireBoot.ApiService.csproj"/>
+    <ProjectReference Include="..\AspireBoot.Domain\AspireBoot.Domain.csproj"/>
+    <ProjectReference Include="..\AspireBoot.Infrastructure\AspireBoot.Infrastructure.csproj"/>
+    <ProjectReference Include="..\AspireBoot.WorkerService\AspireBoot.WorkerService.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit"/>
+  </ItemGroup>
+
+</Project>

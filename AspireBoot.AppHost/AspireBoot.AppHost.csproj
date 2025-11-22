@@ -1,0 +1,29 @@
+<Project Sdk="Aspire.AppHost.Sdk/13.0.0">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost"/>
+    <PackageReference Include="Aspire.Hosting.NodeJs"/>
+    <PackageReference Include="Aspire.Hosting.PostgreSQL"/>
+    <PackageReference Include="Aspire.Hosting.RabbitMQ"/>
+    <PackageReference Include="Aspire.Hosting.Redis"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AspireBoot.ApiService\AspireBoot.ApiService.csproj"/>
+    <ProjectReference Include="..\AspireBoot.WorkerService\AspireBoot.WorkerService.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

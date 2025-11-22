@@ -1,0 +1,34 @@
+/* You can add global styles to this file, and also import other style files */
+
+.btn-purple {
+  color: #ffffff;
+  background: #7045af;
+  border-color: #7045af;
+}
+
+.btn-purple:hover {
+  color: #ffffff;
+  background: #382257;
+  border-color: #382257;
+}
+
+.btn-outline-purple {
+  color: #7045af;
+  border-color: #7045af;
+}
+
+.btn-outline-purple:hover {
+  color: #ffffff;
+  background: #382257;
+  border-color: #382257;
+}
+
+.icon-link-purple {
+  color: #7045af;
+  text-decoration-color: #7045af;
+}
+
+.icon-link-purple:hover {
+  color: #382257;
+  text-decoration-color: #382257;
+}

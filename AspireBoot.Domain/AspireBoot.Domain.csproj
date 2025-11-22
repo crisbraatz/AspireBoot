@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="AspireBoot.Tests.Integration"/>
+    <InternalsVisibleTo Include="AspireBoot.Tests.Unit"/>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/SolutionItems/">
+    <File Path=".editorconfig"/>
+    <File Path=".gitignore"/>
+    <File Path="Directory.Build.props"/>
+    <File Path="Directory.Packages.props"/>
+    <File Path="LICENSE"/>
+    <File Path="NuGet.Config"/>
+    <File Path="README.md"/>
+  </Folder>
+  <Folder Name="/SolutionItems/GitHub/"/>
+  <Folder Name="/SolutionItems/GitHub/Workflows/">
+    <File Path=".github\workflows\ci.yml"/>
+  </Folder>
+  <Project Path="AspireBoot.ApiService/AspireBoot.ApiService.csproj"/>
+  <Project Path="AspireBoot.AppHost/AspireBoot.AppHost.csproj"/>
+  <Project Path="AspireBoot.Domain/AspireBoot.Domain.csproj"/>
+  <Project Path="AspireBoot.Infrastructure/AspireBoot.Infrastructure.csproj"/>
+  <Project Path="AspireBoot.ServiceDefaults/AspireBoot.ServiceDefaults.csproj"/>
+  <Project Path="AspireBoot.Tests.Integration\AspireBoot.Tests.Integration.csproj"/>
+  <Project Path="AspireBoot.Tests.Unit\AspireBoot.Tests.Unit.csproj"/>
+  <Project Path="AspireBoot.WorkerService/AspireBoot.WorkerService.csproj"/>
+</Solution>
