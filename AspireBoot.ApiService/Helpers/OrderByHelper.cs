@@ -4,7 +4,7 @@ public static class OrderByHelper
 {
     public static IDictionary<string, bool> ToDictionary<T>(string? orderBy)
     {
-        var propertiesName = typeof(T).GetProperties().Select(x => x.Name.ToUpperInvariant()).ToHashSet();
+        HashSet<string> propertiesName = typeof(T).GetProperties().Select(x => x.Name.ToUpperInvariant()).ToHashSet();
 
         orderBy ??= $"{propertiesName.FirstOrDefault()} ASC";
 

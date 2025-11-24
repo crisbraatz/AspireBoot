@@ -25,8 +25,8 @@ public class UsersServiceTests
     [Fact]
     public async Task ListByShouldListById()
     {
-        var userA = new User(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
-        var userB = new User("EXAMPLETWO@EMAIL.COM", "abc123-DEF456-ghi789");
+        User userA = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
+        User userB = new("EXAMPLETWO@EMAIL.COM", "abc123-DEF456-ghi789");
         await _usersRepository.InsertManyAsync(new List<User> { userA, userB });
         await _integrationTestsFixture.CommitAsync();
         ListUsersRequestDto request = new() { Id = userA.Id };
@@ -51,8 +51,8 @@ public class UsersServiceTests
     [Fact]
     public async Task ListByShouldReturnEmptyWhenIdNotFound()
     {
-        var userA = new User(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
-        var userB = new User("EXAMPLETWO@EMAIL.COM", "abc123-DEF456-ghi789");
+        User userA = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
+        User userB = new("EXAMPLETWO@EMAIL.COM", "abc123-DEF456-ghi789");
         await _usersRepository.InsertManyAsync(new List<User> { userA, userB });
         await _integrationTestsFixture.CommitAsync();
         ListUsersRequestDto request = new() { Id = Guid.CreateVersion7() };
@@ -69,8 +69,8 @@ public class UsersServiceTests
     [Fact]
     public async Task ListByShouldListByEmailOrderedByEmailAscending()
     {
-        var userA = new User(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
-        var userB = new User("EXAMPLETWO@EMAIL.COM", "abc123-DEF456-ghi789");
+        User userA = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
+        User userB = new("EXAMPLETWO@EMAIL.COM", "abc123-DEF456-ghi789");
         await _usersRepository.InsertManyAsync(new List<User> { userA, userB });
         await _integrationTestsFixture.CommitAsync();
         ListUsersRequestDto request = new()
@@ -106,8 +106,8 @@ public class UsersServiceTests
     [Fact]
     public async Task ListByShouldListByEmailOrderedByEmailDescending()
     {
-        var userA = new User(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
-        var userB = new User("EXAMPLETWO@EMAIL.COM", "abc123-DEF456-ghi789");
+        User userA = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
+        User userB = new("EXAMPLETWO@EMAIL.COM", "abc123-DEF456-ghi789");
         await _usersRepository.InsertManyAsync(new List<User> { userA, userB });
         await _integrationTestsFixture.CommitAsync();
         ListUsersRequestDto request = new()
@@ -143,8 +143,8 @@ public class UsersServiceTests
     [Fact]
     public async Task ListByShouldReturnEmptyWhenEmailNotFound()
     {
-        var userA = new User(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
-        var userB = new User("EXAMPLE2@EMAIL.COM", "abc123-DEF456-ghi789");
+        User userA = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789");
+        User userB = new("EXAMPLE2@EMAIL.COM", "abc123-DEF456-ghi789");
         await _usersRepository.InsertManyAsync(new List<User> { userA, userB });
         await _integrationTestsFixture.CommitAsync();
         ListUsersRequestDto request = new() { Email = "EXAMPLE3@EMAIL.COM" };
