@@ -18,11 +18,10 @@ public interface IBaseEntityRepository<T> where T : BaseEntity
     Task<TP?> ProjectOneByAsync<TP>(
         Expression<Func<T, bool>>? filter,
         Expression<Func<T, TP>> project,
-        CancellationToken cancellationToken = default) where TP : BaseListDto;
+        CancellationToken cancellationToken = default);
 
     Task<(IEnumerable<TP> data, int totalItems)> ProjectManyByAsync<TP>(
-        BaseListRequestDto<T> request, Expression<Func<T, TP>> project, CancellationToken cancellationToken = default)
-        where TP : BaseListDto;
+        BaseListRequestDto<T> request, Expression<Func<T, TP>> project, CancellationToken cancellationToken = default);
 
     Task<IEnumerable<T>> SelectManyByAsync(
         Expression<Func<T, bool>>? filter = null, bool track = false, CancellationToken cancellationToken = default);

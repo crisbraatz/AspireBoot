@@ -30,7 +30,7 @@ public class BaseEntityRepository<T>(DatabaseContext databaseContext) : IBaseEnt
     public async Task<TP?> ProjectOneByAsync<TP>(
         Expression<Func<T, bool>>? filter,
         Expression<Func<T, TP>> project,
-        CancellationToken cancellationToken = default) where TP : BaseListDto =>
+        CancellationToken cancellationToken = default) =>
         await DbSet
             .AsNoTracking()
             .Where(filter ?? (_ => true))
@@ -40,7 +40,6 @@ public class BaseEntityRepository<T>(DatabaseContext databaseContext) : IBaseEnt
 
     public async Task<(IEnumerable<TP> data, int totalItems)> ProjectManyByAsync<TP>(
         BaseListRequestDto<T> request, Expression<Func<T, TP>> project, CancellationToken cancellationToken = default)
-        where TP : BaseListDto
     {
         IQueryable<T> queryable = DbSet.AsQueryable();
 

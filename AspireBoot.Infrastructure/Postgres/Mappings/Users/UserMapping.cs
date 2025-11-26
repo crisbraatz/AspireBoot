@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace AspireBoot.Infrastructure.Postgres.Mappings.Users;
 
-public class UserMapping(EntityTypeBuilder<User> builder) : BaseEntityMapping<User>(builder)
+public class UserMapping(EntityTypeBuilder<User> entityTypeBuilder) : BaseEntityMapping<User>(entityTypeBuilder)
 {
     protected override string TableName => "users";
 
