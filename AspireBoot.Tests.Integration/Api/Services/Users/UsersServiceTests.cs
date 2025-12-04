@@ -5,7 +5,7 @@ using AspireBoot.Domain.Entities.Users;
 using AspireBoot.Infrastructure.Postgres.Repositories;
 using FluentAssertions;
 
-namespace AspireBoot.Tests.Integration.Api.Services.Auth;
+namespace AspireBoot.Tests.Integration.Api.Services.Users;
 
 [Collection("IntegrationTestsCollection")]
 public class UsersServiceTests

@@ -11,15 +11,16 @@ namespace AspireBoot.Infrastructure.Rabbit;
 
 public class BasePublisher(IConnectionFactory connectionFactory, ILogger<BasePublisher> logger)
 {
-    public async Task PublishAsync(string exchange, object message, CancellationToken token = default)
+    public async Task PublishAsync(string exchange, object message, CancellationToken cancellationToken = default)
     {
         try
         {
-            IConnection connection = await connectionFactory.CreateConnectionAsync(token).ConfigureAwait(false);
+            IConnection connection =
+                await connectionFactory.CreateConnectionAsync(cancellationToken).ConfigureAwait(false);
             await using (connection)
             {
                 IChannel channel =
-                    await connection.CreateChannelAsync(cancellationToken: token).ConfigureAwait(false);
+                    await connection.CreateChannelAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
                 await using (channel)
                 {
                     BasicProperties basicProperties = new() { Headers = new Dictionary<string, object?>() };
@@ -29,7 +30,7 @@ public class BasePublisher(IConnectionFactory connectionFactory, ILogger<BasePub
                             basicProperties.Headers,
                             (headers, key, value) => headers[key] = Encoding.UTF8.GetBytes(value));
                     await channel
-                        .ExchangeDeclareAsync(exchange, ExchangeType.Fanout, cancellationToken: token)
+                        .ExchangeDeclareAsync(exchange, ExchangeType.Fanout, cancellationToken: cancellationToken)
                         .ConfigureAwait(false);
                     await channel
                         .BasicPublishAsync(
@@ -38,7 +39,7 @@ public class BasePublisher(IConnectionFactory connectionFactory, ILogger<BasePub
                             false,
                             basicProperties,
                             Encoding.UTF8.GetBytes(JsonSerializer.Serialize(message)),
-                            cancellationToken: token)
+                            cancellationToken)
                         .ConfigureAwait(false);
                 }
             }
