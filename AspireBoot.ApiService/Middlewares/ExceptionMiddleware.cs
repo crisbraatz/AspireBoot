@@ -1,4 +1,4 @@
-using AspireBoot.Infrastructure.Extensions;
+using AspireBoot.Domain.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspireBoot.ApiService.Middlewares;

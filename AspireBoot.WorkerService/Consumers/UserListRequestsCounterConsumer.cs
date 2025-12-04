@@ -1,6 +1,6 @@
 using AspireBoot.Domain;
+using AspireBoot.Domain.Extensions;
 using AspireBoot.Domain.Meters;
-using AspireBoot.Infrastructure.Extensions;
 using AspireBoot.Infrastructure.Rabbit;
 using RabbitMQ.Client;
 

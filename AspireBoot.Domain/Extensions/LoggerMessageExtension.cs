@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Logging;
 
-namespace AspireBoot.Infrastructure.Extensions;
+namespace AspireBoot.Domain.Extensions;
 
 public static class LoggerMessageExtension
 {

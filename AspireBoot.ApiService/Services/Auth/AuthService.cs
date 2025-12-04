@@ -4,7 +4,7 @@ using AspireBoot.Domain.DTOs;
 using AspireBoot.Domain.DTOs.Tokens;
 using AspireBoot.Domain.DTOs.Users;
 using AspireBoot.Domain.Entities.Users;
-using AspireBoot.Infrastructure.Extensions;
+using AspireBoot.Domain.Extensions;
 using AspireBoot.Infrastructure.Postgres.Repositories.Users;
 using AspireBoot.Infrastructure.Redis;
 
