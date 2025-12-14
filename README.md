@@ -15,6 +15,7 @@ Included out of the box:
 - Postgres 17 database
 - Rabbit 4 broker with Management UI
 - Redis 8 cache with Redis Commander
+- Caddy 2 for HTTPS and reverse proxy
 
 ## Prerequisites
 
@@ -37,6 +38,7 @@ The Aspire dashboard will open at `https://localhost:5000`, showing all resource
 
 - Frontend `https://aspireboot.localhost:1443`
 - Scalar API documentation `https://api.localhost:1443/scalar/`
+  - Trust the certificate before using the frontend
 - Rabbit Management UI `https://rabbit.localhost:1443`
 - Redis Commander `https://redis.localhost:1443`
 
