@@ -9,12 +9,16 @@ public static class AppSettings
 
     public static void Get(IConfiguration configuration) => s_configuration = configuration;
 
-    public static string AngularOrigin => s_configuration?["AspireBoot:AngularOrigin"] ?? "https://localhost:4200";
+    public static string AngularHost => s_configuration?["AspireBoot:AngularHost"] ?? "aspireboot.localhost";
+
+    public static string AngularOrigin =>
+        s_configuration?["AspireBoot:AngularOrigin"] ?? "https://aspireboot.localhost:1443";
+
     private static string AppEnvironment => s_configuration?["AspireBoot:AppEnvironment"] ?? "development";
     public static CultureInfo AppLanguage => new(s_configuration?["AspireBoot:AppLanguage"] ?? "en-US");
     public static string AppName => new(s_configuration?["AspireBoot:AppName"] ?? "AspireBoot");
     public static string AppVersion => new(s_configuration?["AspireBoot:AppVersion"] ?? "1.0.0");
-    public static string AspireOrigin => s_configuration?["AspireBoot:AspireOrigin"] ?? "https://localhost:5100";
+    public static string AspireHost => s_configuration?["AspireBoot:AspireHost"] ?? "api.localhost";
     public static string CookieDomain => s_configuration?["AspireBoot:Cookie:Domain"] ?? "localhost";
 
     public static int CookieExpiresAfter

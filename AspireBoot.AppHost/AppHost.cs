@@ -36,13 +36,8 @@ IResourceBuilder<RabbitMQServerResource> rabbitMqServerResource = distributedApp
         distributedApplicationBuilder.AddParameter(
             "RabbitPassword", configurationRoot["Rabbit:Password"] ?? "rabbit", secret: true))
     .WithImage("library/rabbitmq:4-management")
-    .WithEndpoint("https", x =>
-    {
-        x.Port = 15671;
-        x.TargetPort = 15672;
-    })
     .WithDataVolume()
-    .WithManagementPlugin(15673);
+    .WithManagementPlugin(15672);
 
 IResourceBuilder<RedisResource> redisResource = distributedApplicationBuilder
     .AddRedis(
@@ -52,13 +47,7 @@ IResourceBuilder<RedisResource> redisResource = distributedApplicationBuilder
     .WithImage("redis:8")
     .WithHostPort(6379)
     .WithDataVolume()
-    .WithRedisCommander(x => x
-            .WithEndpoint("http", y =>
-            {
-                y.Port = 6380;
-                y.TargetPort = 8081;
-            }),
-        "RedisCommander");
+    .WithRedisCommander(containerName: "RedisCommander");
 
 IResourceBuilder<ProjectResource> apiServiceProjectResource = distributedApplicationBuilder
     .AddProject<Projects.AspireBoot_ApiService>("ApiService")
@@ -68,10 +57,10 @@ IResourceBuilder<ProjectResource> apiServiceProjectResource = distributedApplica
     .WaitFor(postgresDatabaseResource)
     .WaitFor(rabbitMqServerResource)
     .WaitFor(redisResource)
-    .WithEndpoint("https", x =>
+    .WithEndpoint("http", x =>
     {
-        x.Port = 5100;
-        x.TargetPort = 5101;
+        x.Port = 5101;
+        x.TargetPort = 5100;
     })
     .WithHttpHealthCheck("/health");
 
@@ -84,13 +73,29 @@ IResourceBuilder<ProjectResource> workerServiceProjectResource = distributedAppl
     .WaitFor(rabbitMqServerResource)
     .WaitFor(redisResource);
 
-distributedApplicationBuilder
-    .AddNpmApp("Angular", "../AspireBoot.Angular")
+IResourceBuilder<NodeAppResource> angularServiceNodeAppResource = distributedApplicationBuilder
+    .AddNpmApp("Angular", "../AspireBoot.Angular", "start:prod")
     .WithReference(apiServiceProjectResource)
     .WithReference(workerServiceProjectResource)
     .WaitFor(apiServiceProjectResource)
     .WaitFor(workerServiceProjectResource)
-    .WithHttpsEndpoint(env: "PORT")
-    .WithExternalHttpEndpoints();
+    .WithEndpoint("http", x =>
+    {
+        x.Port = 4201;
+        x.TargetPort = 4200;
+    });
+
+distributedApplicationBuilder
+    .AddContainer("Caddy", "caddy:2")
+    .WithBindMount("./Caddyfile", "/etc/caddy/Caddyfile")
+    .WithHttpEndpoint(1443, 1443, "https")
+    .WithReference(redisResource)
+    .WithReference(rabbitMqServerResource)
+    .WithReference(apiServiceProjectResource)
+    .WithReference(workerServiceProjectResource)
+    .WaitFor(redisResource)
+    .WaitFor(rabbitMqServerResource)
+    .WaitFor(apiServiceProjectResource)
+    .WaitFor(angularServiceNodeAppResource);
 
 await distributedApplicationBuilder.Build().RunAsync().ConfigureAwait(false);

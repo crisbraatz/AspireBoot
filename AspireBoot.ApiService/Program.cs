@@ -11,8 +11,8 @@ webApplicationBuilder.Services
     .AddProblemDetails()
     .AddOpenApi()
     .AddCors(x => x
-        .AddPolicy("AllowAngularAndAspire", y => y
-            .WithOrigins(AppSettings.AngularOrigin, AppSettings.AspireOrigin)
+        .AddPolicy("AllowAngular", y => y
+            .WithOrigins(AppSettings.AngularOrigin)
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()));
@@ -39,9 +39,25 @@ webApplication.MapDefaultEndpoints();
 webApplication
     .UseHttpsRedirection()
     .UseRouting()
-    .UseCors("AllowAngularAndAspire")
+    .UseCors("AllowAngular")
     .UseAuthentication()
     .UseAuthorization();
 webApplication.MapControllers();
+webApplication.Use(async (context, next) =>
+{
+    string host = context.Request.Host.Host;
+
+    if (host.Equals(AppSettings.AngularHost, StringComparison.OrdinalIgnoreCase) ||
+        host.Equals(AppSettings.AspireHost, StringComparison.OrdinalIgnoreCase) ||
+        context.Request.Path.StartsWithSegments("/health", StringComparison.OrdinalIgnoreCase))
+    {
+        await next().ConfigureAwait(false);
+
+        return;
+    }
+
+    context.Response.StatusCode = 403;
+    await context.Response.WriteAsync("Forbidden").ConfigureAwait(false);
+});
 
 await webApplication.RunAsync().ConfigureAwait(false);

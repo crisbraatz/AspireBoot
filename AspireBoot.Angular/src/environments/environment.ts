@@ -1,5 +1,5 @@
 export const environment = {
-  baseUrl: 'https://localhost:5100/api',
+  baseUrl: 'https://api.localhost:1443/api',
   endpoints: {
     auth: {
       refreshToken: '/auth/refresh-token',

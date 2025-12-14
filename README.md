@@ -31,22 +31,14 @@ Included out of the box:
 
 Trust HTTPS certificates by executing the command `dotnet dev-certs https --trust` (one-time setup).
 
-Set up the frontend by executing the commands (one-time setup):
-
-```bash
-mkdir ssl
-mkcert -key-file ssl/key.pem -cert-file ssl/cert.pem localhost 127.0.0.1 ::1;
-npm install
-```
-
 In the .NET IDE, run/debug the `AspireBoot.AppHost` project using the `https` profile.
 
 The Aspire dashboard will open at `https://localhost:5000`, showing all resources:
 
-- Frontend `https://localhost:4200`
-- Scalar API documentation `https://localhost:5100/scalar`
-- Rabbit Management UI `http://localhost:15673`
-- Redis Commander `http://localhost:6380`
+- Frontend `https://aspireboot.localhost:1443`
+- Scalar API documentation `https://api.localhost:1443/scalar/`
+- Rabbit Management UI `https://rabbit.localhost:1443`
+- Redis Commander `https://redis.localhost:1443`
 
 ### Migrating the database
 
@@ -95,4 +87,4 @@ Ideal for tasks like sending emails, processing reports, etc.
 
 Responsive frontend.
 
-Access it at `https://localhost:4200` by executing the command `ng serve`.
+Access it at `http://localhost:4200` by executing the command `ng serve`.

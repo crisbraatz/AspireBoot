@@ -2,6 +2,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting"/>
+    <PackageReference Update="SonarAnalyzer.CSharp">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>

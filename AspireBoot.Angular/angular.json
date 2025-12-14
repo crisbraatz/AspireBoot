@@ -68,17 +68,11 @@
           "configurations": {
             "production": {
               "buildTarget": "AspireBoot.Angular:build:production",
-              "port": 4200,
-              "ssl": true,
-              "sslCert": "ssl/cert.pem",
-              "sslKey": "ssl/key.pem"
+              "port": 4200
             },
             "development": {
               "buildTarget": "AspireBoot.Angular:build:development",
-              "port": 4200,
-              "ssl": true,
-              "sslCert": "ssl/cert.pem",
-              "sslKey": "ssl/key.pem"
+              "port": 4200
             }
           },
           "defaultConfiguration": "development"

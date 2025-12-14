@@ -1,0 +1,16 @@
+aspireboot.localhost:1443 {
+    reverse_proxy host.docker.internal:4201
+}
+
+https://api.localhost:1443 {
+    tls internal
+    reverse_proxy host.docker.internal:5101
+}
+
+rabbit.localhost:1443 {
+    reverse_proxy Rabbit:15672
+}
+
+redis.localhost:1443 {
+    reverse_proxy RedisCommander:8081
+}
