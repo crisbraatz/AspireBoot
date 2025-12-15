@@ -9,10 +9,10 @@ public static class AppSettings
 
     public static void Get(IConfiguration configuration) => s_configuration = configuration;
 
-    public static string AngularHost => s_configuration?["AspireBoot:AngularHost"] ?? "aspireboot.localhost";
+    public static string AngularHost => s_configuration?["AspireBoot:AngularHost"] ?? "app.localhost";
 
     public static string AngularOrigin =>
-        s_configuration?["AspireBoot:AngularOrigin"] ?? "https://aspireboot.localhost:1443";
+        s_configuration?["AspireBoot:AngularOrigin"] ?? "https://app.localhost:1443";
 
     private static string AppEnvironment => s_configuration?["AspireBoot:AppEnvironment"] ?? "development";
     public static CultureInfo AppLanguage => new(s_configuration?["AspireBoot:AppLanguage"] ?? "en-US");

@@ -36,7 +36,7 @@ In the .NET IDE, run/debug the `AspireBoot.AppHost` project using the `https` pr
 
 The Aspire dashboard will open at `https://localhost:5000`, showing all resources:
 
-- Frontend `https://aspireboot.localhost:1443`
+- Frontend `https://app.localhost:1443`
 - Scalar API documentation `https://api.localhost:1443/scalar/`
   - Trust the certificate before using the frontend
 - Rabbit Management UI `https://rabbit.localhost:1443`
