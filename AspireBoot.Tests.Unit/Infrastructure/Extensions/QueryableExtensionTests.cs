@@ -9,7 +9,7 @@ public class QueryableExtensionTests
     private readonly IEnumerable<DtoForTests> _dto = Builder<DtoForTests>
         .CreateListOfSize(10)
         .All()
-        .Do(x => x.Property = Guid.NewGuid().ToString())
+        .Do(x => x.Property = Guid.CreateVersion7().ToString())
         .Build()
         .ToList();
 
