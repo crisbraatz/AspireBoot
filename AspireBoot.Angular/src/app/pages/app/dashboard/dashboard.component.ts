@@ -19,7 +19,6 @@ export class DashboardComponent {
 
   errorMessage: string | null = null;
   isLoading = false;
-
   searchEmail = '';
   users: ListUserResponse[] = [];
 
