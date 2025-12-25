@@ -31,8 +31,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       return next(authReq);
     }),
     catchError(error => {
-      authService.clearTokens();
-      authService.redirectToSignIn();
+      if (error.status === 401) {
+        authService.clearTokens();
+        authService.redirectToSignIn();
+      }
 
       return throwError(() => error);
     })
