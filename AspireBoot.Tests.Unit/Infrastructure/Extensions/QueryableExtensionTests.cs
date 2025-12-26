@@ -39,6 +39,7 @@ public class QueryableExtensionTests
     [Theory]
     [InlineData(null)]
     [InlineData("")]
+    [InlineData(" ")]
     [InlineData("InvalidProperty")]
     public void ShouldGetUnorderedQueryableWhenInvalidPropertyProvided(string? property)
     {
