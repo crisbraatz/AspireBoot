@@ -18,6 +18,7 @@ export class SignInComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
 
+  errorMessage: string | null = null;
   form = this.formBuilder.group({
     email: ['', [
       Validators.required,
@@ -28,7 +29,6 @@ export class SignInComponent implements OnInit {
       Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[a-zA-Z\d\W]{16,32}$/)
     ]]
   });
-  errorMessage: string | null = null;
   isLoading = false;
   returnUrl = '/app/dashboard';
   submitted = false;
@@ -59,19 +59,17 @@ export class SignInComponent implements OnInit {
         this.resetForm();
       },
       error: (err) => {
-        this.errorMessage = this.getErrorMessage(err);
+        switch (err.status) {
+          case 400: case 401: case 404: case 409:
+            this.errorMessage = err.error?.errorMessage;
+            break;
+          default:
+            this.errorMessage = 'Cannot sign in now. Try again later.';
+            break;
+        }
         this.resetForm();
       }
     });
-  }
-
-  private getErrorMessage(err: HttpErrorResponse): string {
-    switch (err.status) {
-      case 400: case 401: case 404: case 409:
-        return err.error?.errorMessage;
-      default:
-        return 'Cannot sign in now. Try again later.';
-    }
   }
 
   private resetForm(): void {

@@ -18,6 +18,7 @@ export class SignUpComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private router = inject(Router);
 
+  errorMessage: string | null = null;
   form = this.formBuilder.group({
     email: ['', [
       Validators.required,
@@ -29,7 +30,6 @@ export class SignUpComponent implements OnInit {
       ]],
       password2: ['', [Validators.required]]
     }, { validators: this.passwordsMatchValidator });
-  errorMessage: string | null = null;
   isLoading = false;
   returnUrl = '/app/dashboard';
   submitted = false;
@@ -60,19 +60,23 @@ export class SignUpComponent implements OnInit {
         this.resetForm();
       },
       error: (err) => {
-        this.errorMessage = this.getErrorMessage(err);
+        switch (err.status) {
+          case 400: case 401: case 409:
+            this.errorMessage = err.error?.errorMessage;
+            break;
+          default:
+            this.errorMessage = 'Cannot sign up now. Try again later.';
+            break;
+        }
         this.resetForm();
       }
     });
   }
 
-  private getErrorMessage(err: HttpErrorResponse): string {
-    switch (err.status) {
-      case 400: case 401: case 409:
-        return err.error?.errorMessage;
-      default:
-        return 'Cannot sign up now. Try again later.';
-    }
+  private passwordsMatchValidator(group: AbstractControl) {
+    const password1 = group.get('password1')?.value;
+    const password2 = group.get('password2')?.value;
+    return password1 === password2 ? null : { passwordsMismatch: true };
   }
 
   private resetForm(): void {
@@ -80,12 +84,6 @@ export class SignUpComponent implements OnInit {
     this.form.markAsUntouched();
     this.isLoading = false;
     this.submitted = false;
-  }
-
-  private passwordsMatchValidator(group: AbstractControl) {
-    const password1 = group.get('password1')?.value;
-    const password2 = group.get('password2')?.value;
-    return password1 === password2 ? null : { passwordsMismatch: true };
   }
 
   get email() { return this.form.get('email'); }
