@@ -18,18 +18,13 @@ public class IntegrationTestsFixture : IAsyncLifetime
     private IServiceProvider? _serviceProvider;
     private DatabaseContext? _databaseContext;
 
-    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
-        .WithImage("postgres:17")
+    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder("postgres:17")
         .WithDatabase("integration-tests")
         .Build();
 
-    private readonly RabbitMqContainer _rabbitMqContainer = new RabbitMqBuilder()
-        .WithImage("library/rabbitmq:4")
-        .Build();
+    private readonly RabbitMqContainer _rabbitMqContainer = new RabbitMqBuilder("library/rabbitmq:4").Build();
 
-    private readonly RedisContainer _redisContainer = new RedisBuilder()
-        .WithImage("redis:8")
-        .Build();
+    private readonly RedisContainer _redisContainer = new RedisBuilder("redis:8").Build();
 
     public async Task CommitAsync() =>
         await (_databaseContext?.SaveChangesAsync(CancellationToken)!).ConfigureAwait(false);

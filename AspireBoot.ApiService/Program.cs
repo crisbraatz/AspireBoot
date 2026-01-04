@@ -37,7 +37,6 @@ if (webApplication.Environment.IsDevelopment())
 
 webApplication.MapDefaultEndpoints();
 webApplication
-    .UseHttpsRedirection()
     .UseRouting()
     .UseCors("AllowAngular")
     .UseAuthentication()
