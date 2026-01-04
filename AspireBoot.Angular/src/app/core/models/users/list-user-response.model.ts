@@ -1,9 +1,9 @@
 export interface ListUserResponse {
   email?: string;
   id?: string;
-  createdAt?: Date;
+  createdAt?: string;
   createdBy?: string;
-  updatedAt?: Date;
+  updatedAt?: string;
   updatedBy?: string;
   active?: boolean;
 }

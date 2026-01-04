@@ -21,9 +21,9 @@
           <tbody>
             <tr *ngFor="let user of users">
               <td>{{ user.email }}</td>
-              <td>{{ user.createdAt | date:'short' }}</td>
+              <td>{{ user.createdAt }}</td>
               <td>{{ user.createdBy }}</td>
-              <td>{{ user.updatedAt | date:'short' }}</td>
+              <td>{{ user.updatedAt }}</td>
               <td>{{ user.updatedBy }}</td>
               <td>{{ user.active ? 'Yes' : 'No' }}</td>
             </tr>
