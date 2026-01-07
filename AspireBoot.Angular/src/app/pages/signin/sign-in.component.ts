@@ -33,15 +33,14 @@ export class SignInComponent implements OnInit {
   submitted = false;
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.returnUrl = params['returnUrl'] || '/app/dashboard';
-    });
+    this.activatedRoute.queryParams.subscribe(params => { this.returnUrl = params['returnUrl'] || '/app/dashboard'; });
   }
 
   submit(): void {
     this.submitted = true;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+      
       return;
     }
 
@@ -66,6 +65,7 @@ export class SignInComponent implements OnInit {
             this.errorMessage = 'Cannot sign in now. Try again later.';
             break;
         }
+
         this.resetForm();
       }
     });

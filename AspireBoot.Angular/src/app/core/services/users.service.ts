@@ -11,9 +11,8 @@ export class UsersService{
 
   listBy(email?: string): Observable<BaseListResponse<ListUserResponse>> {
     let params = new HttpParams();
-    if (email) {
+    if (email)
         params = params.set('email', email);
-    }
 
     return this.http.get<BaseListResponse<ListUserResponse>>(
       `${environment.baseUrl}${environment.endpoints.users.listBy}`,

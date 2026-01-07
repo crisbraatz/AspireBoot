@@ -58,25 +58,21 @@ export class AuthService{
 
   refreshTokenIfNeeded(): Observable<string | null> {
     const token = this.getToken();
-    if (!token) {
+    if (!token)
       return throwError(() => new Error('Token not found'));
-    }
 
-    if (!this.willTokenExpireSoon(token)) {
+    if (!this.willTokenExpireSoon(token))
       return of(token);
-    }
 
-    if (this.isRefreshing) {
+    if (this.isRefreshing)
       return this.refreshSubject.asObservable();
-    }
 
     this.isRefreshing = true;
     return this.refreshToken().pipe(
       map((response) => {
         const newToken = response.data?.token;
-        if (!newToken) {
+        if (!newToken)
           throw new Error('Token not found');
-        }
 
         this.storeToken(newToken);
         this.refreshSubject.next(newToken);

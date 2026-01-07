@@ -27,22 +27,21 @@ export class SignUpComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[a-zA-Z\d\W]{16,32}$/)
       ]],
-      password2: ['', [Validators.required]]
+    password2: ['', [Validators.required]]
     }, { validators: this.passwordsMatchValidator });
   isLoading = false;
   returnUrl = '/app/dashboard';
   submitted = false;
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.returnUrl = params['returnUrl'] || '/app/dashboard';
-    });
+    this.activatedRoute.queryParams.subscribe(params => { this.returnUrl = params['returnUrl'] || '/app/dashboard'; });
   }
 
   submit(): void {
     this.submitted = true;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+
       return;
     }
 
@@ -67,6 +66,7 @@ export class SignUpComponent implements OnInit {
             this.errorMessage = 'Cannot sign up now. Try again later.';
             break;
         }
+
         this.resetForm();
       }
     });
@@ -75,6 +75,7 @@ export class SignUpComponent implements OnInit {
   private passwordsMatchValidator(group: AbstractControl) {
     const password1 = group.get('password1')?.value;
     const password2 = group.get('password2')?.value;
+    
     return password1 === password2 ? null : { passwordsMismatch: true };
   }
 
