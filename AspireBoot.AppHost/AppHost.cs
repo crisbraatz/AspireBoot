@@ -88,6 +88,8 @@ IResourceBuilder<NodeAppResource> angularServiceNodeAppResource = distributedApp
 distributedApplicationBuilder
     .AddContainer("Caddy", "caddy:2")
     .WithBindMount("./Caddyfile", "/etc/caddy/Caddyfile")
+    .WithBindMount("./localhost-cert.pem", "/etc/caddy/localhost-cert.pem")
+    .WithBindMount("./localhost-key.pem", "/etc/caddy/localhost-key.pem")
     .WithHttpEndpoint(1443, 1443, "https")
     .WithReference(redisResource)
     .WithReference(rabbitMqServerResource)

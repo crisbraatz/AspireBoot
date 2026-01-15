@@ -30,15 +30,17 @@ Included out of the box:
 
 ## Running the application locally
 
-Trust HTTPS certificates by executing the command `dotnet dev-certs https --trust` (one-time setup).
-
-In the .NET IDE, run/debug the `AspireBoot.AppHost` project using the `https` profile.
+1. Trust HTTPS certificates by executing the command `dotnet dev-certs https --trust` (one-time setup)
+2. Create a local CA
+     ```bash
+     mkcert -key-file localhost-key.pem -cert-file localhost-cert.pem \ app.localhost api.localhost rabbit.localhost redis.localhost
+     ```
+3. In the .NET IDE, run/debug the `AspireBoot.AppHost` project using the `https` profile.
 
 The Aspire dashboard will open at `https://localhost:5000`, showing all resources:
 
 - Frontend `https://app.localhost:1443`
 - Scalar API documentation `https://api.localhost:1443/scalar/`
-  - Trust the certificate before using the frontend
 - Rabbit Management UI `https://rabbit.localhost:1443`
 - Redis Commander `https://redis.localhost:1443`
 

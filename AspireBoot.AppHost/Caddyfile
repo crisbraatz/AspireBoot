@@ -1,6 +1,5 @@
 app.localhost:1443 {
-    tls internal
-
+    tls /etc/caddy/localhost-cert.pem /etc/caddy/localhost-key.pem
     @spa {
         not path /assets/*
         not path *.css
@@ -21,21 +20,21 @@ app.localhost:1443 {
         not path *.woff
         not path *.woff2
     }
-
     rewrite @spa /
-
     reverse_proxy host.docker.internal:4201
 }
 
 api.localhost:1443 {
-    tls internal
+    tls /etc/caddy/localhost-cert.pem /etc/caddy/localhost-key.pem
     reverse_proxy host.docker.internal:5101
 }
 
 rabbit.localhost:1443 {
+    tls /etc/caddy/localhost-cert.pem /etc/caddy/localhost-key.pem
     reverse_proxy Rabbit:15672
 }
 
 redis.localhost:1443 {
+    tls /etc/caddy/localhost-cert.pem /etc/caddy/localhost-key.pem
     reverse_proxy RedisCommander:8081
 }
