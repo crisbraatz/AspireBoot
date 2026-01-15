@@ -32,9 +32,10 @@ Included out of the box:
 
 1. Trust HTTPS certificates by executing the command `dotnet dev-certs https --trust` (one-time setup)
 2. Create a local CA
-     ```bash
-     mkcert -key-file localhost-key.pem -cert-file localhost-cert.pem \ app.localhost api.localhost rabbit.localhost redis.localhost
-     ```
+    ```bash
+    mkcert -key-file localhost-key.pem -cert-file localhost-cert.pem \
+      app.localhost api.localhost rabbit.localhost redis.localhost
+    ```
 3. In the .NET IDE, run/debug the `AspireBoot.AppHost` project using the `https` profile.
 
 The Aspire dashboard will open at `https://localhost:5000`, showing all resources:
