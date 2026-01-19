@@ -45,23 +45,14 @@ export class DashboardComponent {
     });
   }
 
-  signOut(): void {
-    this.isLoading = true;
+  signout(): void {
     this.authService.signOut().subscribe({
-      next: () => this.handleSignOut(),
-      error: (err) => {
-        switch (err.status) {
-          case 400: case 401: case 404:
-            this.errorMessage = err.error?.errorMessage;
-            break;
-          default:
-            this.errorMessage = 'Cannot sign out now. Please try again.';
-            break;
-        }
-
+      next: () => {
         this.handleSignOut();
       },
-      complete: () => this.isLoading = false
+      error: () => {
+        this.handleSignOut();
+      }
     });
   }
 
