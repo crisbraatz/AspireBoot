@@ -30,8 +30,16 @@ export class DashboardComponent {
         this.users = res.data ?? [];
         this.isLoading = false;
       },
-      error: () => {
-        this.errorMessage = 'Cannot list users now. Please try again.';
+      error: (err) => {
+        switch (err.status) {
+          case 400: case 401: case 404:
+            this.errorMessage = err.error?.errorMessage;
+            break;
+          default:
+            this.errorMessage = 'Cannot list users now. Please try again.';
+            break;
+        }
+
         this.isLoading = false;
       }
     });
@@ -41,8 +49,16 @@ export class DashboardComponent {
     this.isLoading = true;
     this.authService.signOut().subscribe({
       next: () => this.handleSignOut(),
-      error: () => {
-        this.errorMessage = 'Cannot sign out now. Please try again.';
+      error: (err) => {
+        switch (err.status) {
+          case 400: case 401: case 404:
+            this.errorMessage = err.error?.errorMessage;
+            break;
+          default:
+            this.errorMessage = 'Cannot sign out now. Please try again.';
+            break;
+        }
+
         this.handleSignOut();
       },
       complete: () => this.isLoading = false
