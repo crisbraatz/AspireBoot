@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using AspireBoot.Domain.DTOs.Users;
+using AspireBoot.Domain.DTOs.Auth;
 
-namespace AspireBoot.ApiService.Contracts.Users;
+namespace AspireBoot.ApiService.Contracts.Auth;
 
 public sealed class SignInRequest
 {

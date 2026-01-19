@@ -13,7 +13,9 @@ public sealed class UsersController(IAuthService authService, IUsersService user
 {
     [HttpGet("list-by")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> ListByAsync(
         [FromQuery] ListUsersRequest request, CancellationToken cancellationToken = default)
     {

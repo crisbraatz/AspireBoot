@@ -1,4 +1,4 @@
-namespace AspireBoot.Domain.DTOs.Users;
+namespace AspireBoot.Domain.DTOs.Auth;
 
 public class SignUpUserRequestDto(string email, string password, string? requestedBy) : BaseRequestDto(requestedBy)
 {

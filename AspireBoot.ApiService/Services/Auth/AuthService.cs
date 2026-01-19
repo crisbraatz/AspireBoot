@@ -1,8 +1,7 @@
 using AspireBoot.ApiService.Helpers;
 using AspireBoot.ApiService.Validators;
 using AspireBoot.Domain.DTOs;
-using AspireBoot.Domain.DTOs.Tokens;
-using AspireBoot.Domain.DTOs.Users;
+using AspireBoot.Domain.DTOs.Auth;
 using AspireBoot.Domain.Entities.Users;
 using AspireBoot.Domain.Extensions;
 using AspireBoot.Infrastructure.Postgres.Repositories.Users;

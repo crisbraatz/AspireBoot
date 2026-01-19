@@ -1,10 +1,9 @@
 using AspireBoot.ApiService.Contracts;
-using AspireBoot.ApiService.Contracts.Tokens;
-using AspireBoot.ApiService.Contracts.Users;
+using AspireBoot.ApiService.Contracts.Auth;
 using AspireBoot.ApiService.Services.Auth;
 using AspireBoot.ApiService.Validators;
 using AspireBoot.Domain.DTOs;
-using AspireBoot.Domain.DTOs.Tokens;
+using AspireBoot.Domain.DTOs.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,7 +15,9 @@ public sealed class AuthController(IAuthService authService) : BaseController(au
 
     [HttpPost("refresh-token")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> RefreshTokenAsync(CancellationToken cancellationToken = default)
     {
         ValidatorResponse validatorResponse = await ValidateJwtAsync(cancellationToken).ConfigureAwait(false);
@@ -41,7 +42,6 @@ public sealed class AuthController(IAuthService authService) : BaseController(au
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> SignInAsync(
         [FromBody] SignInRequest request, CancellationToken cancellationToken = default)
     {
@@ -63,6 +63,7 @@ public sealed class AuthController(IAuthService authService) : BaseController(au
 
     [HttpPost("sign-out")]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SignOutAsync(CancellationToken cancellationToken = default)
@@ -87,6 +88,7 @@ public sealed class AuthController(IAuthService authService) : BaseController(au
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> SignUpAsync(
         [FromBody] SignUpRequest request, CancellationToken cancellationToken = default)

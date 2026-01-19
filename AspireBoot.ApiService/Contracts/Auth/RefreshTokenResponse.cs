@@ -1,7 +1,7 @@
 using AspireBoot.Domain.DTOs;
-using AspireBoot.Domain.DTOs.Tokens;
+using AspireBoot.Domain.DTOs.Auth;
 
-namespace AspireBoot.ApiService.Contracts.Tokens;
+namespace AspireBoot.ApiService.Contracts.Auth;
 
 public sealed class RefreshTokenResponse(string token)
 {

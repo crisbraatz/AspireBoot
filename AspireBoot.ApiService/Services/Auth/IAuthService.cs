@@ -1,7 +1,6 @@
 using AspireBoot.ApiService.Validators;
 using AspireBoot.Domain.DTOs;
-using AspireBoot.Domain.DTOs.Tokens;
-using AspireBoot.Domain.DTOs.Users;
+using AspireBoot.Domain.DTOs.Auth;
 
 namespace AspireBoot.ApiService.Services.Auth;
 

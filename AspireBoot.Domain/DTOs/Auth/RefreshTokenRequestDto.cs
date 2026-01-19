@@ -1,4 +1,4 @@
-namespace AspireBoot.Domain.DTOs.Tokens;
+namespace AspireBoot.Domain.DTOs.Auth;
 
 public class RefreshTokenRequestDto(string? token, string? requestedBy, bool isRefresh = true)
     : BaseRequestDto(requestedBy)

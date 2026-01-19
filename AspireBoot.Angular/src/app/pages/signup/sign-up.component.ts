@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { SignUpRequest } from '../../core/models/auth/sign-up-user-request.model';
 import { AuthService } from '../../core/services/auth.service';
-import { SignUpRequest } from '../../core/models/users/sign-up-user-request.model';
 
 @Component({
   selector: 'app-sign-up',
@@ -59,7 +59,7 @@ export class SignUpComponent implements OnInit {
       },
       error: (err) => {
         switch (err.status) {
-          case 400: case 401: case 409:
+          case 400: case 401: case 404:
             this.errorMessage = err.error?.errorMessage;
             break;
           default:

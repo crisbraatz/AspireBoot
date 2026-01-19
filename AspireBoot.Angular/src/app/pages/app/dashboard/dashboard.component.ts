@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ListUsersRequest } from '../../../core/models/users/list-user-request.model';
 import { ListUserResponse } from '../../../core/models/users/list-user-response.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { UsersService } from '../../../core/services/users.service';
@@ -24,7 +25,7 @@ export class DashboardComponent {
 
   listBy(): void {
     this.isLoading = true;
-    this.usersService.listBy(this.searchEmail).subscribe({
+    this.usersService.listBy({email: this.searchEmail } as ListUsersRequest).subscribe({
       next: (res) => {
         this.users = res.data ?? [];
         this.isLoading = false;

@@ -3,16 +3,17 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { BaseListResponse } from "../models/base-list-response.model";
+import { ListUsersRequest } from "../models/users/list-user-request.model";
 import { ListUserResponse } from "../models/users/list-user-response.model";
 
 @Injectable({ providedIn: 'root' })
 export class UsersService{
   private http = inject(HttpClient);
 
-  listBy(email?: string): Observable<BaseListResponse<ListUserResponse>> {
+  listBy(data: ListUsersRequest): Observable<BaseListResponse<ListUserResponse>> {
     let params = new HttpParams();
-    if (email)
-        params = params.set('email', email);
+    if (data.email)
+        params = params.set('email', data.email);
 
     return this.http.get<BaseListResponse<ListUserResponse>>(
       `${environment.baseUrl}${environment.endpoints.users.listBy}`,
