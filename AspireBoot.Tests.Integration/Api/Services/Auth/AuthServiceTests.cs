@@ -287,7 +287,8 @@ public class AuthServiceTests
     [InlineData(null)]
     [InlineData("")]
     [InlineData(" ")]
-    public async Task ValidateJwtShouldReturnClaimNotFoundInRequestHeadersAuthorization(string? request)
+    public async Task ValidateJwtShouldReturnClaimNotFoundInRequestHeadersAuthorizationWhenInvalidRequest(
+        string? request)
     {
         ValidatorResponse response =
             await _authService.ValidateJwtAsync(request, cancellationToken: _integrationTestsFixture.CancellationToken);
@@ -298,7 +299,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task ValidateJwtShouldReturnUnauthorizedAccess()
+    public async Task ValidateJwtShouldReturnUnauthorizedAccessWhenInvalidRequest()
     {
         ValidatorResponse response = await _authService.ValidateJwtAsync(
             IntegrationTestsFixture.RequestedBy, cancellationToken: _integrationTestsFixture.CancellationToken);
