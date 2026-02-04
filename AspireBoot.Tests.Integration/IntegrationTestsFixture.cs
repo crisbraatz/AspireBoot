@@ -18,7 +18,7 @@ public class IntegrationTestsFixture : IAsyncLifetime
     private IServiceProvider? _serviceProvider;
     private DatabaseContext? _databaseContext;
 
-    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder("postgres:17")
+    private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder("postgres:18")
         .WithDatabase("integration-tests")
         .Build();
 

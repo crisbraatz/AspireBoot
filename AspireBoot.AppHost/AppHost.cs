@@ -17,7 +17,7 @@ IResourceBuilder<PostgresDatabaseResource> postgresDatabaseResource = distribute
         "Postgres",
         password: distributedApplicationBuilder.AddParameter(
             "PostgresPassword", configurationRoot["Postgres:Password"] ?? "postgres", secret: true))
-    .WithImage("postgres:17")
+    .WithImage("postgres:18")
     .WithEnvironment("PGHOST", configurationRoot["Postgres:Host"] ?? "127.0.0.1")
     .WithEnvironment("PGPORT", configurationRoot["Postgres:Port"] ?? "5432")
     .WithEnvironment("PGUSER", configurationRoot["Postgres:Username"] ?? "aspireboot")

@@ -11,8 +11,8 @@ Included out of the box:
 - Web API and Worker built with C# / .NET 10.0
     - JWT authentication and authorization with refresh tokens
     - Integration and unit tests using XUnit
-- Responsive Angular 20 frontend
-- Postgres 17 database
+- Responsive Angular 21 frontend
+- Postgres 18 database
 - Rabbit 4 broker with Management UI
 - Redis 8 cache with Redis Commander
 - Caddy 2 for HTTPS and reverse proxy
