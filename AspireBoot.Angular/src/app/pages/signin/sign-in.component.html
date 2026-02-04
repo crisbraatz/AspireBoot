@@ -4,15 +4,21 @@
     <div class="form-floating">
       <input type="email" class="form-control" id="email" placeholder="example@email.com" formControlName="email" [class.is-invalid]="submitted && email?.invalid" required>
       <label for="email">Email</label>
-      <div class="invalid-feedback my-1" *ngIf="submitted && (email?.invalid || email?.errors?.['pattern'])">Invalid email.</div>
+      @if (submitted && (email?.invalid || email?.errors?.['pattern'])) {
+        <div class="invalid-feedback my-1">Invalid email.</div>
+      }
     </div>
     <div class="form-floating">
       <input type="password" class="form-control" id="password" placeholder="StrongPassword123!" formControlName="password" [class.is-invalid]="submitted && password?.invalid">
       <label for="password">Password</label>
-      <div class="invalid-feedback my-1" *ngIf="submitted && password?.invalid">Invalid password. Hint: at least one lowercase, one uppercase, one number and one special character. Between 16 and 32 characters.</div>
+      @if (submitted && password?.invalid) {
+        <div class="invalid-feedback my-1">Invalid password. Hint: at least one lowercase, one uppercase, one number and one special character. Between 16 and 32 characters.</div>
+      }
     </div>
     <button class="btn btn-purple w-100 py-2" type="submit">Sign in</button>
-    <div class="alert alert-danger mt-3" *ngIf="errorMessage">{{ errorMessage }}</div>
+    @if (errorMessage) {
+      <div class="alert alert-danger mt-3">{{ errorMessage }}</div>
+    }
     <div class="mt-3 text-center">
       <a class="link-purple text-decoration-none" routerLink="/sign-up">Sign up instead</a>
     </div>
