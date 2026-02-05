@@ -876,3 +876,5 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/aspnetcore,csharp,dotnetcore,linux,macos,rider,visualstudio,visualstudiocode,windows
 
 *.pem
+
+postgres-data/

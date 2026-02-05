@@ -25,7 +25,7 @@ IResourceBuilder<PostgresDatabaseResource> postgresDatabaseResource = distribute
     .WithEnvironment("PGCONNECT_TIMEOUT", configurationRoot["Postgres:ConnectTimeout"] ?? "60")
     .WithEnvironment("PGSSLMODE", configurationRoot["Postgres:SslMode"] ?? "disable")
     .WithHostPort(5432)
-    .WithDataVolume()
+    .WithBindMount("./postgres-data", "/var/lib/postgresql")
     .AddDatabase("aspireboot");
 
 IResourceBuilder<RabbitMQServerResource> rabbitMqServerResource = distributedApplicationBuilder
