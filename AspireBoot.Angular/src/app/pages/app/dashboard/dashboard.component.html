@@ -1,46 +1,48 @@
 <main>
   <div class="p-5 my-5 text-center">
-    <img class="d-block mx-auto mb-5" src="assets/brand/logo.png" alt="Aspire Boot Logo" width="300"/>
+    <img class="d-block mx-auto mb-5" src="assets/brand/logo.png" alt="Aspire Boot Logo" width="300" />
     <div class="col-lg-6 mx-auto">
       <div class="input-group mb-5">
         <input type="text" class="form-control" placeholder="Search by email" [(ngModel)]="searchEmail">
-        <button type="button" class="btn btn-purple btn-lg gap-3" (click)="listBy()" [disabled]="isLoading">Search</button>
+        <button type="button" class="btn btn-purple btn-lg gap-3" (click)="listBy()"
+          [disabled]="isLoading">Search</button>
       </div>
       <div class="d-flex justify-content-center">
         @if (users.length > 0) {
-          <table class="table table-striped mb-5 w-auto">
-            <thead>
-              <tr>
-                <th>Email</th>
-                <th>Created At</th>
-                <th>Created By</th>
-                <th>Updated At</th>
-                <th>Updated By</th>
-                <th>Active</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (user of users; track user) {
-                <tr>
-                  <td>{{ user.email }}</td>
-                  <td>{{ user.createdAt }}</td>
-                  <td>{{ user.createdBy }}</td>
-                  <td>{{ user.updatedAt }}</td>
-                  <td>{{ user.updatedBy }}</td>
-                  <td>{{ user.active ? 'Yes' : 'No' }}</td>
-                </tr>
-              }
-            </tbody>
-          </table>
+        <table class="table table-striped mb-5 w-auto">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Created At</th>
+              <th>Created By</th>
+              <th>Updated At</th>
+              <th>Updated By</th>
+              <th>Active</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of users; track user) {
+            <tr>
+              <td>{{ user.email }}</td>
+              <td>{{ user.createdAt }}</td>
+              <td>{{ user.createdBy }}</td>
+              <td>{{ user.updatedAt }}</td>
+              <td>{{ user.updatedBy }}</td>
+              <td>{{ user.active ? 'Yes' : 'No' }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
         }
       </div>
       <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
         <button type="button" class="btn btn-outline-purple btn-lg px-5 gap-3" (click)="signOut()">Sign out</button>
       </div>
       @if (errorMessage) {
-        <div class="alert alert-danger mt-3">{{ errorMessage }}</div>
+      <div class="alert alert-danger mt-3">{{ errorMessage }}</div>
       }
-      <p class="pt-5 mt-5 text-body-secondary">&copy; 2025 Developed by <a href="https://crisbraatz.github.io" target="_blank" class="link-purple">crisbraatz</a></p>
+      <p class="pt-5 mt-5 text-body-secondary">&copy; 2025 Developed by <a href="https://crisbraatz.github.io"
+          target="_blank" class="link-purple">crisbraatz</a></p>
     </div>
   </div>
 </main>

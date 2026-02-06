@@ -9,7 +9,7 @@ import { SignUpRequest } from "../models/auth/sign-up-user-request.model";
 import { environment } from "../../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
-export class AuthService{
+export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
 
@@ -23,7 +23,7 @@ export class AuthService{
   }
 
   getAuthHeaders(): HttpHeaders {
-    return new HttpHeaders({ Authorization: `Bearer ${this.getToken()}`});
+    return new HttpHeaders({ Authorization: `Bearer ${this.getToken()}` });
   }
 
   getToken(): string | null {
@@ -35,7 +35,7 @@ export class AuthService{
 
     if (payload && typeof payload === 'object' && 'exp' in payload) {
       const exp = (payload as { exp: number }).exp;
-      
+
       return !exp || exp < Math.floor(Date.now() / 1000);
     }
 
@@ -112,7 +112,7 @@ export class AuthService{
 
     return this.http.post<BaseResponse<RefreshTokenResponse>>(
       `${environment.baseUrl}${environment.endpoints.auth.signUp}`,
-      data, 
+      data,
       { withCredentials: true }
     );
   }
@@ -126,7 +126,7 @@ export class AuthService{
 
     if (payload && typeof payload === 'object' && 'exp' in payload) {
       const exp = (payload as { exp: number }).exp;
-      
+
       return !exp || exp - Math.floor(Date.now() / 1000) < 60;
     }
 

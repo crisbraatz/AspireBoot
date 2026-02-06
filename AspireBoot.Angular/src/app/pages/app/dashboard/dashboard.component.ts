@@ -25,7 +25,7 @@ export class DashboardComponent {
 
   listBy(): void {
     this.isLoading = true;
-    this.usersService.listBy({email: this.searchEmail } as ListUsersRequest).subscribe({
+    this.usersService.listBy({ email: this.searchEmail } as ListUsersRequest).subscribe({
       next: (res) => {
         this.users = res.data ?? [];
         this.isLoading = false;

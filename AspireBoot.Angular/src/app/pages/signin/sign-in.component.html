@@ -1,30 +1,34 @@
 <main class="form-sign-in w-100 m-auto">
   <form [formGroup]="form" (ngSubmit)="submit()" class="needs-validation" novalidate>
-    <img src="assets/brand/logo.png" class="pt-5 my-5" alt="Aspire Boot Logo" width="300"/>
+    <img src="assets/brand/logo.png" class="pt-5 my-5" alt="Aspire Boot Logo" width="300" />
     <div class="form-floating">
-      <input type="email" class="form-control" id="email" placeholder="example@email.com" formControlName="email" [class.is-invalid]="submitted && email?.invalid" required>
+      <input type="email" class="form-control" id="email" placeholder="example@email.com" formControlName="email"
+        [class.is-invalid]="submitted && email?.invalid" required>
       <label for="email">Email</label>
       @if (submitted && (email?.invalid || email?.errors?.['pattern'])) {
-        <div class="invalid-feedback my-1">Invalid email.</div>
+      <div class="invalid-feedback my-1">Invalid email.</div>
       }
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="password" placeholder="StrongPassword123!" formControlName="password" [class.is-invalid]="submitted && password?.invalid">
+      <input type="password" class="form-control" id="password" placeholder="StrongPassword123!"
+        formControlName="password" [class.is-invalid]="submitted && password?.invalid">
       <label for="password">Password</label>
       @if (submitted && password?.invalid) {
-        <div class="invalid-feedback my-1">Invalid password. Hint: at least one lowercase, one uppercase, one number and one special character. Between 16 and 32 characters.</div>
+      <div class="invalid-feedback my-1">Invalid password. Hint: at least one lowercase, one uppercase, one number and
+        one special character. Between 16 and 32 characters.</div>
       }
     </div>
     <button class="btn btn-purple w-100 py-2" type="submit">Sign in</button>
     @if (errorMessage) {
-      <div class="alert alert-danger mt-3">{{ errorMessage }}</div>
+    <div class="alert alert-danger mt-3">{{ errorMessage }}</div>
     }
     <div class="mt-3 text-center">
       <a class="link-purple text-decoration-none" routerLink="/sign-up">Sign up instead</a>
     </div>
     <div class="mt-3 text-center">
       <a class="link-purple text-decoration-none" routerLink="/">Return to home page</a>
-      <p class="pt-5 mt-5 text-body-secondary">&copy; 2025 Developed by <a href="https://crisbraatz.github.io" target="_blank" class="link-purple">crisbraatz</a></p>
+      <p class="pt-5 mt-5 text-body-secondary">&copy; 2025 Developed by <a href="https://crisbraatz.github.io"
+          target="_blank" class="link-purple">crisbraatz</a></p>
     </div>
   </form>
 </main>

@@ -8,7 +8,7 @@ export const environment = {
       signUp: '/auth/sign-up'
     },
     users: {
-        listBy: '/users/list-by'
+      listBy: '/users/list-by'
     }
   }
 };

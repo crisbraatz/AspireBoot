@@ -24,11 +24,11 @@ export class SignUpComponent implements OnInit {
       Validators.pattern(/^[\w!#$%&'*+/=?`{|}~^.-]+(?:\.[\w!#$%&'*+/=?`{|}~^.-]+)*@(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}$/)
     ]],
     password1: ['', [
-        Validators.required,
-        Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[a-zA-Z\d\W]{16,32}$/)
-      ]],
+      Validators.required,
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])[a-zA-Z\d\W]{16,32}$/)
+    ]],
     password2: ['', [Validators.required]]
-    }, { validators: this.passwordsMatchValidator });
+  }, { validators: this.passwordsMatchValidator });
   isLoading = false;
   returnUrl = '/app/dashboard';
   submitted = false;
@@ -75,7 +75,7 @@ export class SignUpComponent implements OnInit {
   private passwordsMatchValidator(group: AbstractControl) {
     const password1 = group.get('password1')?.value;
     const password2 = group.get('password2')?.value;
-    
+
     return password1 === password2 ? null : { passwordsMismatch: true };
   }
 

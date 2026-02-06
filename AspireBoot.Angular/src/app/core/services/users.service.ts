@@ -7,13 +7,13 @@ import { ListUsersRequest } from "../models/users/list-user-request.model";
 import { ListUserResponse } from "../models/users/list-user-response.model";
 
 @Injectable({ providedIn: 'root' })
-export class UsersService{
+export class UsersService {
   private http = inject(HttpClient);
 
   listBy(data: ListUsersRequest): Observable<BaseListResponse<ListUserResponse>> {
     let params = new HttpParams();
     if (data.email)
-        params = params.set('email', data.email);
+      params = params.set('email', data.email);
 
     return this.http.get<BaseListResponse<ListUserResponse>>(
       `${environment.baseUrl}${environment.endpoints.users.listBy}`,
