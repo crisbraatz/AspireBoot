@@ -3,7 +3,7 @@ import { inject, Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "../../../environments/environment";
 import { BaseListResponse } from "../models/base-list-response.model";
-import { ListUsersRequest } from "../models/users/list-user-request.model";
+import { ListUsersRequest } from "../models/users/list-users-request.model";
 import { ListUserResponse } from "../models/users/list-user-response.model";
 
 @Injectable({ providedIn: 'root' })

@@ -2,7 +2,7 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ListUsersRequest } from '../../../core/models/users/list-user-request.model';
+import { ListUsersRequest } from '../../../core/models/users/list-users-request.model';
 import { ListUserResponse } from '../../../core/models/users/list-user-response.model';
 import { AuthService } from '../../../core/services/auth.service';
 import { UsersService } from '../../../core/services/users.service';
