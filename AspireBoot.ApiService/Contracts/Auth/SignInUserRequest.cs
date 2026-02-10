@@ -3,7 +3,7 @@ using AspireBoot.Domain.DTOs.Auth;
 
 namespace AspireBoot.ApiService.Contracts.Auth;
 
-public sealed class SignInRequest
+public sealed class SignInUserRequest
 {
     [Required] public required string Email { get; init; }
 

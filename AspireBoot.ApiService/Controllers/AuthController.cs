@@ -43,7 +43,7 @@ public sealed class AuthController(IAuthService authService) : BaseController(au
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> SignInAsync(
-        [FromBody] SignInRequest request, CancellationToken cancellationToken = default)
+        [FromBody] SignInUserRequest request, CancellationToken cancellationToken = default)
     {
         BaseResponseDto signInResponse = await _authService
             .SignInAsync(request.ConvertToDto(GetClaimFromAuthorization()), cancellationToken)
@@ -91,7 +91,7 @@ public sealed class AuthController(IAuthService authService) : BaseController(au
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> SignUpAsync(
-        [FromBody] SignUpRequest request, CancellationToken cancellationToken = default)
+        [FromBody] SignUpUserRequest request, CancellationToken cancellationToken = default)
     {
         BaseResponseDto signUpResponse = await _authService
             .SignUpAsync(request.ConvertToDto(GetClaimFromAuthorization()), cancellationToken)

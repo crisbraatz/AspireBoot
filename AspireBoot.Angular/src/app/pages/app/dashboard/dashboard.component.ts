@@ -45,7 +45,7 @@ export class DashboardComponent {
     });
   }
 
-  signout(): void {
+  signOut(): void {
     this.authService.signOut().subscribe({
       next: () => {
         this.handleSignOut();

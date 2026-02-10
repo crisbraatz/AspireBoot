@@ -4,8 +4,8 @@ import { Router } from "@angular/router";
 import { finalize, map, Observable, of, ReplaySubject, throwError } from "rxjs";
 import { BaseResponse } from "../models/base-response.model";
 import { RefreshTokenResponse } from "../models/auth/refresh-token-response.model";
-import { SignInRequest } from "../models/auth/sign-in-user-request.model";
-import { SignUpRequest } from "../models/auth/sign-up-user-request.model";
+import { SignInUserRequest } from "../models/auth/sign-in-user-request.model";
+import { SignUpUserRequest } from "../models/auth/sign-up-user-request.model";
 import { environment } from "../../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
@@ -87,7 +87,7 @@ export class AuthService {
     );
   }
 
-  signIn(data: SignInRequest): Observable<BaseResponse<RefreshTokenResponse>> {
+  signIn(data: SignInUserRequest): Observable<BaseResponse<RefreshTokenResponse>> {
     this.clearTokens();
 
     return this.http.post<BaseResponse<RefreshTokenResponse>>(
@@ -107,7 +107,7 @@ export class AuthService {
     );
   }
 
-  signUp(data: SignUpRequest): Observable<BaseResponse<RefreshTokenResponse>> {
+  signUp(data: SignUpUserRequest): Observable<BaseResponse<RefreshTokenResponse>> {
     this.clearTokens();
 
     return this.http.post<BaseResponse<RefreshTokenResponse>>(

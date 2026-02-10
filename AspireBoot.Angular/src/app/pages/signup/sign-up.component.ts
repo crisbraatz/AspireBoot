@@ -2,7 +2,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SignUpRequest } from '../../core/models/auth/sign-up-user-request.model';
+import { SignUpUserRequest } from '../../core/models/auth/sign-up-user-request.model';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -47,7 +47,7 @@ export class SignUpComponent implements OnInit {
 
     this.isLoading = true;
     const { email, password1 } = this.form.value;
-    this.authService.signUp({ email, password: password1 } as SignUpRequest).subscribe({
+    this.authService.signUp({ email, password: password1 } as SignUpUserRequest).subscribe({
       next: (res) => {
         const token = res.data?.token;
         if (token) {
