@@ -129,7 +129,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task SignInShouldReturnInvalidPasswordFormatForEmailWhenInvalidRequest()
+    public async Task SignInShouldReturnInvalidPasswordFormatWhenInvalidRequest()
     {
         SignInUserRequestDto request = new(IntegrationTestsFixture.RequestedBy, "StrongPassword", string.Empty);
 
@@ -153,7 +153,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task SignInShouldReturnInvalidPasswordForEmailWhenInvalidRequest()
+    public async Task SignInShouldReturnInvalidPasswordWhenInvalidRequest()
     {
         SignInUserRequestDto request = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789", string.Empty);
         await _usersRepository.InsertOneAsync(
@@ -236,7 +236,7 @@ public class AuthServiceTests
     }
 
     [Fact]
-    public async Task SignUpShouldReturnInvalidPasswordFormatForEmailWhenInvalidRequest()
+    public async Task SignUpShouldReturnInvalidPasswordFormatWhenInvalidRequest()
     {
         SignUpUserRequestDto request = new(IntegrationTestsFixture.RequestedBy, "StrongPassword", string.Empty);
 
