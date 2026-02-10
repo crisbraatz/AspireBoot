@@ -244,7 +244,7 @@ public class AuthServiceTests
 
         response.IsFailure.Should().BeTrue();
         response.ErrorCode.Should().Be(400);
-        response.ErrorMessage.Should().Be("Invalid password format for email.");
+        response.ErrorMessage.Should().Be("Invalid password format.");
     }
 
     [Fact]

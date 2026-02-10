@@ -166,7 +166,7 @@ public sealed class AuthService(
 
         if (PasswordValidator.ValidateFormat(request.Password).IsFailure)
         {
-            const string errorMessage = "Invalid password format for email.";
+            const string errorMessage = "Invalid password format.";
 
             using (logger.BeginScope(nameof(AuthService)))
                 LoggerMessageExtension.LogServiceError(logger, errorMessage);
