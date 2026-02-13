@@ -30,6 +30,6 @@ public static class LoggerMessageExtension
 
     public static void LogServiceError(ILogger logger, string errorMessage) =>
 #pragma warning disable CA2254
-        LoggerMessage.Define(LogLevel.Information, new EventId(1004, "ServiceError"), errorMessage)(logger, null);
+        LoggerMessage.Define(LogLevel.Error, new EventId(1004, "ServiceError"), errorMessage)(logger, null);
 #pragma warning restore CA2254
 }

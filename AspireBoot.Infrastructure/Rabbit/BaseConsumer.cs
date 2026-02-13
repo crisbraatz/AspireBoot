@@ -28,16 +28,33 @@ public abstract class BaseConsumer<T>(
 
     public async Task StartAsync(CancellationToken cancellationToken)
     {
+        ulong deliveryTag = 0;
+
         try
         {
             _connection = await connectionFactory.CreateConnectionAsync(cancellationToken).ConfigureAwait(false);
             _channel =
                 await _connection.CreateChannelAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
             await _channel
+                .ExchangeDeclareAsync(
+                    $"dlx.{exchange}", ExchangeType.Direct, durable: true, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+            await _channel
+                .QueueDeclareAsync($"dlq.{queue}", durable: true, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+            await _channel
+                .QueueBindAsync($"dlq.{queue}", $"dlx.{exchange}", "dlq", cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+            await _channel
                 .ExchangeDeclareAsync(exchange, ExchangeType.Fanout, cancellationToken: cancellationToken)
                 .ConfigureAwait(false);
-            QueueDeclareOk queueDeclareOk =
-                await _channel.QueueDeclareAsync(queue, cancellationToken: cancellationToken).ConfigureAwait(false);
+            Dictionary<string, object?> arguments = new()
+            {
+                { "x-dead-letter-exchange", $"dlx.{exchange}" }, { "x-dead-letter-routing-key", "dlq" }
+            };
+            QueueDeclareOk queueDeclareOk = await _channel
+                .QueueDeclareAsync(queue, true, false, false, arguments, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
             await _channel
                 .QueueBindAsync(
                     queueDeclareOk.QueueName, exchange, string.Empty, cancellationToken: cancellationToken)
@@ -60,11 +77,20 @@ public abstract class BaseConsumer<T>(
                 using Activity? activity = new ActivitySource(activitySourceName)
                     .StartActivity(GetType().Name, ActivityKind.Consumer, propagationContext.ActivityContext);
                 activity?.SetTag("rabbitmq.routing_key", args.RoutingKey);
-                using IServiceScope serviceScope = serviceScopeFactory.CreateScope();
-                await ProcessAsync(
-                        JsonSerializer.Deserialize<T>(Encoding.UTF8.GetString(args.Body.ToArray())), serviceScope)
-                    .ConfigureAwait(false);
-                await _channel.BasicAckAsync(args.DeliveryTag, false, cancellationToken).ConfigureAwait(false);
+                try
+                {
+                    using IServiceScope serviceScope = serviceScopeFactory.CreateScope();
+                    await ProcessAsync(
+                            JsonSerializer.Deserialize<T>(Encoding.UTF8.GetString(args.Body.ToArray())), serviceScope)
+                        .ConfigureAwait(false);
+                    await _channel.BasicAckAsync(args.DeliveryTag, false, cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception)
+                {
+                    await _channel!.BasicRejectAsync(deliveryTag, false, cancellationToken).ConfigureAwait(false);
+
+                    throw;
+                }
             };
             await _channel
                 .BasicConsumeAsync(
@@ -79,6 +105,8 @@ public abstract class BaseConsumer<T>(
         {
             using (logger.BeginScope(new { Queue = queue, Exchange = exchange }))
                 LoggerMessageExtension.LogBaseConsumerError(logger, queue, exchange, exception);
+
+            await _channel!.BasicRejectAsync(deliveryTag, false, cancellationToken).ConfigureAwait(false);
         }
 #pragma warning restore CA1031
     }
