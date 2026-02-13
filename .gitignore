@@ -878,3 +878,5 @@ $RECYCLE.BIN/
 *.pem
 
 postgres-data/
+rabbitmq-data/
+redis-data/

@@ -36,7 +36,7 @@ IResourceBuilder<RabbitMQServerResource> rabbitMqServerResource = distributedApp
         distributedApplicationBuilder.AddParameter(
             "RabbitPassword", configurationRoot["Rabbit:Password"] ?? "rabbit", secret: true))
     .WithImage("library/rabbitmq:4-management")
-    .WithDataVolume()
+    .WithBindMount("./rabbitmq-data", "/var/lib/rabbitmq")
     .WithManagementPlugin(15672);
 
 IResourceBuilder<RedisResource> redisResource = distributedApplicationBuilder
@@ -46,7 +46,7 @@ IResourceBuilder<RedisResource> redisResource = distributedApplicationBuilder
             "RedisPassword", configurationRoot["Redis:Password"] ?? "redis", secret: true))
     .WithImage("redis:8")
     .WithHostPort(6379)
-    .WithDataVolume()
+    .WithBindMount("./redis-data", "/data")
     .WithRedisCommander(containerName: "RedisCommander");
 
 IResourceBuilder<ProjectResource> apiServiceProjectResource = distributedApplicationBuilder
