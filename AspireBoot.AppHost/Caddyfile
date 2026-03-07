@@ -1,0 +1,42 @@
+app.localhost:1443 {
+    tls /etc/caddy/localhost-cert.pem /etc/caddy/localhost-key.pem
+    @spa {
+        not path /assets/*
+        not path *.css
+        not path *.eot
+        not path *.gif
+        not path *.jpeg
+        not path *.jpg
+        not path *.js
+        not path *.map
+        not path *.mp3
+        not path *.mp4
+        not path *.png
+        not path *.svg
+        not path *.ttf
+        not path *.webm
+        not path *.webp
+        not path *.wav
+        not path *.woff
+        not path *.woff2
+    }
+    rewrite @spa /
+    reverse_proxy host.docker.internal:4201
+}
+
+api.localhost:1443 {
+    tls /etc/caddy/localhost-cert.pem /etc/caddy/localhost-key.pem
+    reverse_proxy host.docker.internal:5101 {
+        header_up X-Forwarded-Proto {scheme}
+    }
+}
+
+rabbit.localhost:1443 {
+    tls /etc/caddy/localhost-cert.pem /etc/caddy/localhost-key.pem
+    reverse_proxy Rabbit:15672
+}
+
+redis.localhost:1443 {
+    tls /etc/caddy/localhost-cert.pem /etc/caddy/localhost-key.pem
+    reverse_proxy RedisCommander:8081
+}
