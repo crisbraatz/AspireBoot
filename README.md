@@ -37,7 +37,7 @@ Included out of the box:
     mkcert -key-file localhost-key.pem -cert-file localhost-cert.pem \
       app.localhost api.localhost rabbit.localhost redis.localhost
     ```
-3. In the .NET IDE, run/debug the `AspireBoot.AppHost` project using the `https` profile.
+3. In the .NET IDE, run/debug the `AspireBoot.AppHost` project using the `https` profile
 
 The Aspire dashboard will open at `https://localhost:5000`, showing all resources:
 

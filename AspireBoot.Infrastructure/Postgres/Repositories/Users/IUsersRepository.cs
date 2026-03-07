@@ -4,5 +4,5 @@ namespace AspireBoot.Infrastructure.Postgres.Repositories.Users;
 
 public interface IUsersRepository : IBaseEntityRepository<User>
 {
-    Task<bool> ExistsByAsync(string email, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default);
 }

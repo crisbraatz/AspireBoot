@@ -172,7 +172,7 @@ public sealed class AuthService(
             return BaseResponseDto.Failure(400, errorMessage);
         }
 
-        if (await usersRepository.ExistsByAsync(request.Email, cancellationToken).ConfigureAwait(false))
+        if (await usersRepository.ExistsByEmailAsync(request.Email, cancellationToken).ConfigureAwait(false))
         {
             const string errorMessage = "Email already used.";
 
@@ -204,7 +204,7 @@ public sealed class AuthService(
             return ValidatorResponse.Failure(404, errorMessage);
         }
 
-        if (!await usersRepository.ExistsByAsync(request, cancellationToken).ConfigureAwait(false))
+        if (!await usersRepository.ExistsByEmailAsync(request, cancellationToken).ConfigureAwait(false))
         {
             const string errorMessage = "Unauthorized access.";
 

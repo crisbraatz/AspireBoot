@@ -5,7 +5,7 @@ namespace AspireBoot.Infrastructure.Postgres.Repositories.Users;
 
 public class UsersRepository(DatabaseContext context) : BaseEntityRepository<User>(context), IUsersRepository
 {
-    public async Task<bool> ExistsByAsync(string email, CancellationToken cancellationToken = default) =>
+    public async Task<bool> ExistsByEmailAsync(string email, CancellationToken cancellationToken = default) =>
         await DbSet
             .FromSqlInterpolated($"SELECT * FROM users WHERE UPPER(email) = UPPER({email})")
             .AnyAsync(cancellationToken)
