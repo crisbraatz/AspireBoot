@@ -1,0 +1,6 @@
+@import url('../../../styles.css');
+
+.form-sign-in {
+  max-width: 330px;
+  padding: 1rem;
+}
