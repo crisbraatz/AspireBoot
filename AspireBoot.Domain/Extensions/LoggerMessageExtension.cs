@@ -27,9 +27,4 @@ public static class LoggerMessageExtension
         LoggerMessage.Define(
                 LogLevel.Error, new EventId(1000, "ExceptionMiddlewareError"), "Unexpected exception occurred")
             (logger, exception);
-
-    public static void LogServiceError(ILogger logger, string errorMessage) =>
-#pragma warning disable CA2254
-        LoggerMessage.Define(LogLevel.Error, new EventId(1004, "ServiceError"), errorMessage)(logger, null);
-#pragma warning restore CA2254
 }

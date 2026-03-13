@@ -3,17 +3,12 @@ using AspireBoot.ApiService.Validators;
 using AspireBoot.Domain.DTOs;
 using AspireBoot.Domain.DTOs.Auth;
 using AspireBoot.Domain.Entities.Users;
-using AspireBoot.Domain.Extensions;
 using AspireBoot.Infrastructure.Postgres.Repositories.Users;
 using AspireBoot.Infrastructure.Redis;
 
 namespace AspireBoot.ApiService.Services.Auth;
 
-public sealed class AuthService(
-    IUsersRepository usersRepository,
-    IRedisRepository redisRepository,
-    ILogger<AuthService> logger)
-    : IAuthService
+public sealed class AuthService(IUsersRepository usersRepository, IRedisRepository redisRepository) : IAuthService
 {
     private const string RedisPrefix = "AuthRefreshToken";
 
@@ -22,14 +17,7 @@ public sealed class AuthService(
     {
         if (string.IsNullOrWhiteSpace(request.Token) && request.IsRefresh ||
             !string.IsNullOrWhiteSpace(request.Token) && !request.IsRefresh)
-        {
-            const string errorMessage = "Unauthorized access.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto<RefreshTokenResponseDto>.Failure(401, errorMessage);
-        }
+            return BaseResponseDto<RefreshTokenResponseDto>.Failure(401, "Unauthorized access.");
 
         string? authRefreshTokenDb = null;
 
@@ -38,14 +26,7 @@ public sealed class AuthService(
             authRefreshTokenDb = await redisRepository
                 .GetValueFromKeyAsync(RedisPrefix, request.Token!, cancellationToken).ConfigureAwait(false);
             if (authRefreshTokenDb is null)
-            {
-                const string errorMessage = "Token expired.";
-
-                using (logger.BeginScope(nameof(AuthService)))
-                    LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-                return BaseResponseDto<RefreshTokenResponseDto>.Failure(401, errorMessage);
-            }
+                return BaseResponseDto<RefreshTokenResponseDto>.Failure(401, "Token expired.");
         }
 
         string authRefreshToken = TokenHelper.GenerateRefreshJwtFor();
@@ -65,58 +46,25 @@ public sealed class AuthService(
     public async Task<BaseResponseDto> SignInAsync(
         SignInUserRequestDto request, CancellationToken cancellationToken = default)
     {
-        if (EmailValidator.ValidateFormat(request.Email).IsFailure)
-        {
-            const string errorMessage = "Invalid email format.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(400, errorMessage);
-        }
+        ValidatorResponse validatorResponse = EmailValidator.ValidateFormat(request.Email);
+        if (validatorResponse.IsFailure)
+            return BaseResponseDto.Failure(validatorResponse.ErrorCode, validatorResponse.ErrorMessage);
 
         if (!string.IsNullOrWhiteSpace(request.RequestedBy))
-        {
-            const string errorMessage = "Authenticated email can not request user sign in.";
+            return BaseResponseDto.Failure(401, "Authenticated email can not request user sign in.");
 
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(401, errorMessage);
-        }
-
-        if (PasswordValidator.ValidateFormat(request.Password).IsFailure)
-        {
-            const string errorMessage = "Invalid password format.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(400, errorMessage);
-        }
+        validatorResponse = PasswordValidator.ValidateFormat(request.Password);
+        if (validatorResponse.IsFailure)
+            return BaseResponseDto.Failure(validatorResponse.ErrorCode, validatorResponse.ErrorMessage);
 
         User? userDb = await usersRepository
             .SelectOneByAsync(x => x.Email == request.Email && x.Active, cancellationToken: cancellationToken)
             .ConfigureAwait(false);
         if (userDb is null)
-        {
-            const string errorMessage = "Email not found.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(404, errorMessage);
-        }
+            return BaseResponseDto.Failure(404, "Email not found.");
 
         if (!userDb.Email.IsMatch(userDb.Password, request.Password))
-        {
-            const string errorMessage = "Invalid password.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(400, errorMessage);
-        }
+            return BaseResponseDto.Failure(400, "Invalid password.");
 
         return BaseResponseDto.Success();
     }
@@ -125,14 +73,7 @@ public sealed class AuthService(
         RefreshTokenRequestDto request, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(request.RequestedBy))
-        {
-            const string errorMessage = "Unauthenticated email can not request user sign out.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(401, errorMessage);
-        }
+            return BaseResponseDto.Failure(401, "Unauthenticated email can not request user sign out.");
 
         await redisRepository.RemoveKeyAsync(RedisPrefix, request.Token!, cancellationToken).ConfigureAwait(false);
 
@@ -142,45 +83,19 @@ public sealed class AuthService(
     public async Task<BaseResponseDto> SignUpAsync(
         SignUpUserRequestDto request, CancellationToken cancellationToken = default)
     {
-        if (EmailValidator.ValidateFormat(request.Email).IsFailure)
-        {
-            const string errorMessage = "Invalid email format.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(400, errorMessage);
-        }
+        ValidatorResponse validatorResponse = EmailValidator.ValidateFormat(request.Email);
+        if (validatorResponse.IsFailure)
+            return BaseResponseDto.Failure(validatorResponse.ErrorCode, validatorResponse.ErrorMessage);
 
         if (!string.IsNullOrWhiteSpace(request.RequestedBy))
-        {
-            const string errorMessage = "Authenticated email can not request user sign up.";
+            return BaseResponseDto.Failure(401, "Authenticated email can not request user sign up.");
 
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(401, errorMessage);
-        }
-
-        if (PasswordValidator.ValidateFormat(request.Password).IsFailure)
-        {
-            const string errorMessage = "Invalid password format.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(400, errorMessage);
-        }
+        validatorResponse = PasswordValidator.ValidateFormat(request.Password);
+        if (validatorResponse.IsFailure)
+            return BaseResponseDto.Failure(validatorResponse.ErrorCode, validatorResponse.ErrorMessage);
 
         if (await usersRepository.ExistsByEmailAsync(request.Email, cancellationToken).ConfigureAwait(false))
-        {
-            const string errorMessage = "Email already used.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return BaseResponseDto.Failure(409, errorMessage);
-        }
+            return BaseResponseDto.Failure(409, "Email already used.");
 
         await usersRepository
             .InsertOneAsync(
@@ -195,24 +110,10 @@ public sealed class AuthService(
         string? request, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrWhiteSpace(request))
-        {
-            const string errorMessage = "Claim not found in request headers authorization.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return ValidatorResponse.Failure(404, errorMessage);
-        }
+            return ValidatorResponse.Failure(404, "Claim not found in request headers authorization.");
 
         if (!await usersRepository.ExistsByEmailAsync(request, cancellationToken).ConfigureAwait(false))
-        {
-            const string errorMessage = "Unauthorized access.";
-
-            using (logger.BeginScope(nameof(AuthService)))
-                LoggerMessageExtension.LogServiceError(logger, errorMessage);
-
-            return ValidatorResponse.Failure(401, errorMessage);
-        }
+            return ValidatorResponse.Failure(401, "Unauthorized access.");
 
         return ValidatorResponse.Success();
     }
