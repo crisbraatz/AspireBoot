@@ -8,6 +8,9 @@ public class RedisRepository(IDistributedCache distributedCache) : IRedisReposit
         string prefix, string key, CancellationToken cancellationToken = default) =>
         await distributedCache.GetStringAsync($"{prefix}:{key}", cancellationToken).ConfigureAwait(false);
 
+    public async Task RemoveKeyAsync(string prefix, string key, CancellationToken cancellationToken = default) =>
+        await distributedCache.RemoveAsync($"{prefix}:{key}", cancellationToken).ConfigureAwait(false);
+
     public async Task SetKeyAsync(
         string prefix,
         string key,
@@ -23,7 +26,4 @@ public class RedisRepository(IDistributedCache distributedCache) : IRedisReposit
                     : new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = expiration },
                 cancellationToken)
             .ConfigureAwait(false);
-
-    public async Task RemoveKeyAsync(string prefix, string key, CancellationToken cancellationToken = default) =>
-        await distributedCache.RemoveAsync($"{prefix}:{key}", cancellationToken).ConfigureAwait(false);
 }

@@ -15,6 +15,7 @@ public class IntegrationTestsFixture : IAsyncLifetime
 {
     public const string RequestedBy = "EXAMPLE@EMAIL.COM";
     public CancellationToken CancellationToken { get; } = CancellationToken.None;
+    private IServiceScope? _scope;
     private IServiceProvider? _serviceProvider;
     private DatabaseContext? _databaseContext;
 
@@ -29,12 +30,20 @@ public class IntegrationTestsFixture : IAsyncLifetime
     public async Task CommitAsync() =>
         await (_databaseContext?.SaveChangesAsync(CancellationToken)!).ConfigureAwait(false);
 
-    public T GetRequiredService<T>() where T : notnull => _serviceProvider!.GetRequiredService<T>();
+    public T GetRequiredService<T>() where T : notnull => _scope!.ServiceProvider.GetRequiredService<T>();
 
     public async Task ResetAsync()
     {
-        await (_databaseContext?.Database.EnsureDeletedAsync(CancellationToken)!).ConfigureAwait(false);
-        await (_databaseContext?.Database.EnsureCreatedAsync(CancellationToken)!).ConfigureAwait(false);
+        if (_scope is IAsyncDisposable asyncDisposable)
+            await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+        else
+            _scope?.Dispose();
+
+        _scope = _serviceProvider!.CreateScope();
+        _databaseContext = _scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+
+        await _databaseContext.Database.EnsureDeletedAsync(CancellationToken).ConfigureAwait(false);
+        await _databaseContext.Database.EnsureCreatedAsync(CancellationToken).ConfigureAwait(false);
     }
 
     public async Task InitializeAsync()
@@ -53,14 +62,17 @@ public class IntegrationTestsFixture : IAsyncLifetime
 
         _serviceProvider =
             new DefaultServiceProviderFactory(new ServiceProviderOptions()).CreateServiceProvider(serviceCollection);
-        _databaseContext = GetRequiredService<DatabaseContext>();
 
-        await _databaseContext.Database.EnsureDeletedAsync(CancellationToken).ConfigureAwait(false);
-        await _databaseContext.Database.EnsureCreatedAsync(CancellationToken).ConfigureAwait(false);
+        await ResetAsync().ConfigureAwait(false);
     }
 
     public async Task DisposeAsync()
     {
+        if (_scope is IAsyncDisposable asyncDisposable)
+            await asyncDisposable.DisposeAsync().ConfigureAwait(false);
+        else
+            _scope?.Dispose();
+
         await _postgreSqlContainer.DisposeAsync().ConfigureAwait(false);
         await _rabbitMqContainer.DisposeAsync().ConfigureAwait(false);
         await _redisContainer.DisposeAsync().ConfigureAwait(false);
