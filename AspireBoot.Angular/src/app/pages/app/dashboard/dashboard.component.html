@@ -1,0 +1,107 @@
+<main class="ab-shell">
+  <section class="container ab-app-shell">
+    <div class="row g-4 align-items-start mb-4">
+      <div class="col-xl-7">
+        <div class="ab-card ab-panel p-4 p-xl-5">
+          <span class="ab-badge mb-4">Starter Dashboard</span>
+          <img class="ab-logo mb-4" src="assets/brand/logo.png" alt="Aspire Boot Logo" />
+          <h1 class="display-6 fw-bold mb-3">A simple app surface, already styled and ready to extend.</h1>
+          <p class="ab-copy-soft mb-0">This dashboard keeps the existing user search behavior intact, but presents it in a cleaner workspace that feels more like the beginning of a product and less like a placeholder screen.</p>
+        </div>
+      </div>
+
+      <div class="col-xl-5">
+        <div class="row g-3">
+          <div class="col-sm-6 col-xl-12">
+            <div class="ab-card ab-kpi-card">
+              <p class="ab-mini-title mb-2">Search</p>
+              <div class="ab-kpi-value mb-2">Users</div>
+              <p class="ab-copy-soft mb-0">Find users by email and keep the sample workflow focused and useful.</p>
+            </div>
+          </div>
+          <div class="col-sm-6 col-xl-12">
+            <div class="ab-card ab-kpi-card">
+              <p class="ab-mini-title mb-2">Template Goal</p>
+              <div class="ab-kpi-value mb-2">Extend</div>
+              <p class="ab-copy-soft mb-0">Use this page as the base for admin panels, internal tools, or authenticated app areas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ab-card ab-panel p-4 p-xl-5 mb-4">
+      <div class="row g-3 align-items-end">
+        <div class="col-lg-8">
+          <label for="searchEmail" class="form-label ab-mini-title mb-2">Search By Email</label>
+          <input id="searchEmail" type="text" class="form-control form-control-lg ab-search-input" placeholder="Search by email" [(ngModel)]="searchEmail">
+        </div>
+        <div class="col-lg-4">
+          <div class="d-grid">
+            <button type="button" class="btn btn-purple btn-lg" (click)="list()" [disabled]="isLoading()">
+              {{ isLoading() ? 'Searching...' : 'Search Users' }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if (users().length > 0) {
+    <div class="ab-card ab-panel p-3 p-xl-4 mb-4">
+      <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-2 mb-3 px-2">
+        <div>
+          <p class="ab-mini-title mb-1">Results</p>
+          <h2 class="h4 mb-0">Users table</h2>
+        </div>
+        <p class="ab-copy-soft mb-0">{{ users().length }} record(s) loaded</p>
+      </div>
+
+      <div class="ab-table-wrap">
+        <table class="table table-striped table-hover align-middle ab-table">
+          <thead>
+            <tr>
+              <th>Email</th>
+              <th>Created At</th>
+              <th>Created By</th>
+              <th>Updated At</th>
+              <th>Updated By</th>
+              <th>Active</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (user of users(); track user.id ?? $index) {
+            <tr>
+              <td>{{ user.email }}</td>
+              <td>{{ user.createdAt }}</td>
+              <td>{{ user.createdBy }}</td>
+              <td>{{ user.updatedAt }}</td>
+              <td>{{ user.updatedBy }}</td>
+              <td>
+                <span class="ab-pill" [class.ab-pill-active]="user.active" [class.ab-pill-inactive]="!user.active">
+                  {{ user.active ? 'Yes' : 'No' }}
+                </span>
+              </td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    } @else {
+    <div class="ab-card ab-empty-state mb-4">
+      <p class="ab-mini-title mb-2">No Results Yet</p>
+      <h2 class="h4 mb-3">Search to load users into the dashboard.</h2>
+      <p class="ab-copy-soft mb-0">The existing template behavior stays the same. This state simply gives the page a stronger first impression before data appears.</p>
+    </div>
+    }
+
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+      <button type="button" class="btn btn-outline-purple btn-lg px-5" (click)="signOut()">Sign out</button>
+      <p class="ab-footer mb-0">&copy; Developed by <a href="https://crisbraatz.github.io" target="_blank" class="link-purple">crisbraatz</a></p>
+    </div>
+
+    @if (errorMessage()) {
+    <div class="ab-alert alert mt-4">{{ errorMessage() }}</div>
+    }
+  </section>
+</main>

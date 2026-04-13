@@ -1,0 +1,64 @@
+<main class="ab-shell">
+  <section class="container ab-form-wrap">
+    <div class="row g-4 g-xl-5 align-items-center justify-content-center w-100">
+      <div class="col-lg-5">
+        <div class="ab-card ab-panel ab-side-card p-4 p-xl-5">
+          <span class="ab-badge mb-4">Get Started</span>
+          <img src="assets/brand/logo.png" class="ab-logo mb-4" alt="Aspire Boot Logo" />
+          <h1 class="display-6 fw-bold mb-3">Create your account and enter the starter app.</h1>
+          <p class="ab-copy-soft mb-4">The sign-up page is already part of the template flow, giving you a better starting point for account onboarding and first-run product experiences.</p>
+          <div class="ab-card ab-feature-card">
+            <p class="ab-mini-title mb-2">What This Shows</p>
+            <p class="ab-copy-soft mb-0">A complete starter is more convincing when users can move from a branded landing page into real app flows with minimal friction.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-5">
+        <form [formGroup]="form" (ngSubmit)="submit()" class="ab-card ab-panel ab-form-card needs-validation p-4 p-xl-5" novalidate>
+          <p class="ab-mini-title mb-2">Account Creation</p>
+          <h2 class="h2 fw-bold mb-4">Sign up</h2>
+
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="email" placeholder="example@email.com" formControlName="email" [class.is-invalid]="submitted() && email?.invalid" required>
+            <label for="email">Email</label>
+            @if (submitted() && (email?.invalid || email?.errors?.['pattern'])) {
+            <div class="invalid-feedback my-1">Invalid email.</div>
+            }
+          </div>
+
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="password1" placeholder="StrongPassword123!" formControlName="password1" [class.is-invalid]="submitted() && password1?.invalid">
+            <label for="password1">Password</label>
+            @if (submitted() && password1?.invalid) {
+            <div class="invalid-feedback my-1">Invalid password. Hint: at least one lowercase, one uppercase, one number and one special character. Between 16 and 32 characters.</div>
+            }
+          </div>
+
+          <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="password2" placeholder="StrongPassword123!" formControlName="password2" [class.is-invalid]="submitted() && form.errors?.['passwordsMismatch']">
+            <label for="password2">Repeat password</label>
+            @if (submitted() && form.errors?.['passwordsMismatch']) {
+            <div class="invalid-feedback my-1">Passwords must be equal.</div>
+            }
+          </div>
+
+          <button class="btn btn-purple w-100 py-3 mb-3" type="submit" [disabled]="isLoading()">
+            {{ isLoading() ? 'Creating account...' : 'Sign up' }}
+          </button>
+
+          @if (errorMessage()) {
+          <div class="ab-alert alert mt-3">{{ errorMessage() }}</div>
+          }
+
+          <div class="d-flex flex-column gap-2 text-center mt-4">
+            <a class="link-purple text-decoration-none" routerLink="/sign-in">Sign in instead</a>
+            <a class="link-purple text-decoration-none" routerLink="/">Return to home page</a>
+          </div>
+
+          <p class="ab-footer text-center mt-5 mb-0">&copy; Developed by <a href="https://crisbraatz.github.io" target="_blank" class="link-purple">crisbraatz</a></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
