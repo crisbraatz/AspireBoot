@@ -80,13 +80,13 @@ public class UsersServiceTests
     [Fact]
     public async Task CreateShouldReturnEmailAlreadyUsedWhenInvalidRequest()
     {
-        CreateUserRequestDto request = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789", string.Empty);
         await _usersRepository.InsertOneAsync(
             new User(
                 IntegrationTestsFixture.RequestedBy,
                 IntegrationTestsFixture.RequestedBy.GetHashedPassword("abc123-DEF456-ghi789")),
             _integrationTestsFixture.CancellationToken);
         await _integrationTestsFixture.CommitAsync();
+        CreateUserRequestDto request = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789", string.Empty);
 
         BaseResponseDto<RefreshSessionResponseDto> response =
             await _usersService.CreateAsync(request, _integrationTestsFixture.CancellationToken);

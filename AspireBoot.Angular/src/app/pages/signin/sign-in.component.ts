@@ -53,7 +53,7 @@ export class SignInComponent implements OnInit {
     this.errorMessage.set(null);
     this.isLoading.set(true);
     const { email, password } = this.form.value;
-    this.sessionsService.signIn({ email, password } as CreateSessionRequest).subscribe({
+    this.sessionsService.create({ email, password } as CreateSessionRequest).subscribe({
       next: (res) => {
         const token = res.token;
         if (token) {

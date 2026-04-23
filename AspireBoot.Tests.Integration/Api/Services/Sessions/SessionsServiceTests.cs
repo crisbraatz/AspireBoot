@@ -65,8 +65,7 @@ public class SessionsServiceTests
     [Fact]
     public async Task CreateShouldReturnInvalidEmailFormatWhenInvalidRequest()
     {
-        string email = string.Empty;
-        CreateSessionRequestDto request = new(email, "abc123-DEF456-ghi789", email);
+        CreateSessionRequestDto request = new(string.Empty, "abc123-DEF456-ghi789", string.Empty);
 
         BaseResponseDto<RefreshSessionResponseDto> response =
             await _sessionsService.CreateAsync(request, _integrationTestsFixture.CancellationToken);
@@ -92,8 +91,8 @@ public class SessionsServiceTests
     [Fact]
     public async Task CreateShouldReturnUserNotFoundWhenInvalidRequest()
     {
-        CreateSessionRequestDto request = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789",
-            string.Empty);
+        CreateSessionRequestDto request =
+            new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789", string.Empty);
 
         BaseResponseDto<RefreshSessionResponseDto> response =
             await _sessionsService.CreateAsync(request, _integrationTestsFixture.CancellationToken);
@@ -106,14 +105,14 @@ public class SessionsServiceTests
     [Fact]
     public async Task CreateShouldReturnInvalidPasswordWhenInvalidRequest()
     {
-        CreateSessionRequestDto request = new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789",
-            string.Empty);
         await _usersRepository.InsertOneAsync(
             new User(
                 IntegrationTestsFixture.RequestedBy,
                 IntegrationTestsFixture.RequestedBy.GetHashedPassword("abc123-DEF456-ghi789!")),
             _integrationTestsFixture.CancellationToken);
         await _integrationTestsFixture.CommitAsync();
+        CreateSessionRequestDto request =
+            new(IntegrationTestsFixture.RequestedBy, "abc123-DEF456-ghi789", string.Empty);
 
         BaseResponseDto<RefreshSessionResponseDto> response =
             await _sessionsService.CreateAsync(request, _integrationTestsFixture.CancellationToken);
@@ -158,13 +157,13 @@ public class SessionsServiceTests
     [Fact]
     public async Task RefreshShouldRefresh()
     {
-        string token = Guid.CreateVersion7().ToString();
         await _usersRepository.InsertOneAsync(
             new User(
                 IntegrationTestsFixture.RequestedBy,
                 IntegrationTestsFixture.RequestedBy.GetHashedPassword("abc123-DEF456-ghi789")),
             _integrationTestsFixture.CancellationToken);
         await _integrationTestsFixture.CommitAsync();
+        string token = Guid.CreateVersion7().ToString();
         await _redisRepository.SetKeyAsync(
             RedisPrefix,
             token,

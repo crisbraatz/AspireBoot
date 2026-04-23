@@ -6,9 +6,9 @@ import { SessionsService } from "../services/sessions.service";
 export const sessionInterceptor: HttpInterceptorFn = (req, next) => {
   const sessionsService = inject(SessionsService);
 
-  const isSessionRequest = req.url.includes('/sessions') || (req.method === 'POST' && req.url.endsWith('/users'));
+  const isAnonymousRequest = req.url.includes('/sessions') || (req.method === 'POST' && req.url.endsWith('/users'));
 
-  if (isSessionRequest)
+  if (isAnonymousRequest)
     return next(req).pipe(
       catchError(error => {
         if (req.url.includes('/sessions/refresh') && error.status === 401) {

@@ -14,6 +14,16 @@ export class UsersService {
   private http = inject(HttpClient);
   private sessionsService = inject(SessionsService);
 
+  create(data: CreateUserRequest): Observable<RefreshSessionResponse> {
+    this.sessionsService.clearTokens();
+
+    return this.http.post<RefreshSessionResponse>(
+      `${environment.baseUrl}${environment.endpoints.users.create}`,
+      data,
+      { withCredentials: true }
+    );
+  }
+
   list(data: ListUsersRequest): Observable<BaseListResponse<ListUserResponse>> {
     let params = new HttpParams();
 
@@ -23,16 +33,6 @@ export class UsersService {
     return this.http.get<BaseListResponse<ListUserResponse>>(
       `${environment.baseUrl}${environment.endpoints.users.list}`,
       { params, withCredentials: true }
-    );
-  }
-
-  signUp(data: CreateUserRequest): Observable<RefreshSessionResponse> {
-    this.sessionsService.clearTokens();
-
-    return this.http.post<RefreshSessionResponse>(
-      `${environment.baseUrl}${environment.endpoints.users.create}`,
-      data,
-      { withCredentials: true }
     );
   }
 

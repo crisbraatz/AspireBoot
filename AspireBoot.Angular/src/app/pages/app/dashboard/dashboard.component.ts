@@ -46,7 +46,7 @@ export class DashboardComponent {
   }
 
   signOut(): void {
-    this.sessionsService.signOut().subscribe({
+    this.sessionsService.delete().subscribe({
       next: () => this.handleSignOut(),
       error: () => this.handleSignOut()
     });

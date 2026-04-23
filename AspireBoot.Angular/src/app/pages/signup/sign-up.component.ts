@@ -57,7 +57,7 @@ export class SignUpComponent implements OnInit {
     this.errorMessage.set(null);
     this.isLoading.set(true);
     const { email, password1 } = this.form.value;
-    this.usersService.signUp({ email, password: password1 } as CreateUserRequest).subscribe({
+    this.usersService.create({ email, password: password1 } as CreateUserRequest).subscribe({
       next: (res) => {
         const token = res.token;
         if (token) {

@@ -20,6 +20,25 @@ export class SessionsService {
     sessionStorage.clear();
   }
 
+  create(data: CreateSessionRequest): Observable<RefreshSessionResponse> {
+    this.clearTokens();
+
+    return this.http.post<RefreshSessionResponse>(
+      `${environment.baseUrl}${environment.endpoints.sessions.create}`,
+      data,
+      { withCredentials: true }
+    );
+  }
+
+  delete(): Observable<void> {
+    const headers = this.getAuthHeaders();
+
+    return this.http.delete<void>(
+      `${environment.baseUrl}${environment.endpoints.sessions.delete}`,
+      { headers, withCredentials: true }
+    );
+  }
+
   getAuthHeaders(): HttpHeaders {
     return new HttpHeaders({ Authorization: `Bearer ${this.getToken()}` });
   }
@@ -79,25 +98,6 @@ export class SessionsService {
     );
 
     return this.refreshRequest;
-  }
-
-  signIn(data: CreateSessionRequest): Observable<RefreshSessionResponse> {
-    this.clearTokens();
-
-    return this.http.post<RefreshSessionResponse>(
-      `${environment.baseUrl}${environment.endpoints.sessions.create}`,
-      data,
-      { withCredentials: true }
-    );
-  }
-
-  signOut(): Observable<void> {
-    const headers = this.getAuthHeaders();
-
-    return this.http.delete<void>(
-      `${environment.baseUrl}${environment.endpoints.sessions.delete}`,
-      { headers, withCredentials: true }
-    );
   }
 
   storeToken(token: string): void {
