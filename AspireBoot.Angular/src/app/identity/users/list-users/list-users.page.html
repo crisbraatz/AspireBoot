@@ -1,0 +1,70 @@
+<section class="container-page py-10 sm:py-14">
+  <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <p class="eyebrow">AspireBoot</p>
+      <h1 class="page-title mt-3">{{ i18n.t('users.directory') }}</h1>
+    </div>
+    @if (result(); as users) {
+      <span class="rounded-full border border-line px-3 py-1.5 text-xs text-muted">{{
+        i18n.t('users.total', { count: users.count })
+      }}</span>
+    }
+  </div>
+  @if (error()) {
+    <app-error-notice [error]="error()" [retryable]="true" (retry)="retry()" />
+  } @else if (loading()) {
+    <app-loading-state />
+  } @else if (result(); as users) {
+    <div class="panel overflow-hidden">
+      @if (users.items.length) {
+        <ul class="divide-y divide-line">
+          @for (user of users.items; track user.id) {
+            <li>
+              <a
+                [routerLink]="['/users', user.id]"
+                class="flex items-center gap-4 p-5 transition-colors hover:bg-subtle sm:px-7"
+              >
+                <app-user-avatar [name]="user.name" [src]="user.avatarUrl" />
+                <div class="min-w-0 flex-1">
+                  <p class="truncate font-medium">
+                    {{ user.name }}
+                  </p>
+                  @if (user.isAdministrator) {
+                    <span
+                      class="mr-2 inline-flex rounded-full border border-line px-2.5 py-1 text-xs text-accent"
+                      >{{ i18n.t('users.administrator') }}</span
+                    >
+                  }
+                  <span
+                    class="inline-flex rounded-full border border-line px-2.5 py-1 text-xs"
+                    [class.text-accent]="user.isActive"
+                    [class.text-muted]="!user.isActive"
+                    >{{ i18n.t(user.isActive ? 'users.active' : 'users.inactive') }}</span
+                  >
+
+                  @if (current.user()?.id === user.id) {
+                    <p class="mt-1 text-xs text-muted">{{ i18n.t('users.you') }}</p>
+                  }
+                </div>
+                <span class="hidden text-sm text-muted sm:inline">{{ i18n.t('users.view') }}</span
+                ><span aria-hidden="true" class="text-muted">→</span>
+              </a>
+            </li>
+          }
+        </ul>
+      } @else {
+        <div class="px-6 py-16 text-center">
+          <h2 class="font-semibold">{{ i18n.t('users.empty') }}</h2>
+          <p class="mt-2 text-sm text-muted">{{ i18n.t('users.emptyHint') }}</p>
+        </div>
+      }
+      <app-pagination
+        [page]="users.page"
+        [size]="users.size"
+        [count]="users.count"
+        [disabled]="loading()"
+        (pageChange)="paginate($event)"
+      />
+    </div>
+  }
+</section>

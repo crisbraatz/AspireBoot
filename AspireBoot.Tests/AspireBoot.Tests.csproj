@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Exclude>$(Exclude),[*]*Configuration,[*]*DependencyInjection,[JasperFx*]*,[*]JasperFx.*,[Microsoft.AspNetCore.OpenApi*]*,[*]Microsoft.AspNetCore.OpenApi.*,[*]*Options,[*]Program,[*]*.Program,[*]*Repository,[*]System*,[*]*.System*,[Wolverine*]*,[*]Wolverine.*</Exclude>
+    <ExcludeByFile>$(ExcludeByFile),**/*Configuration.cs,**/JasperFx*/**,**/Microsoft.AspNetCore.OpenApi.SourceGenerators/**,**/Migrations/**,**/Wolverine*/**</ExcludeByFile>
+    <IsPackable>false</IsPackable>
+    <IsTestingPlatformApplication>false</IsTestingPlatformApplication>
+    <NoWarn>CA2007</NoWarn>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing"/>
+    <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+    <PackageReference Include="NSubstitute"/>
+    <PackageReference Include="NSubstitute.Analyzers.CSharp">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Respawn"/>
+    <PackageReference Include="Testcontainers.PostgreSql"/>
+    <PackageReference Include="Testcontainers.RabbitMq"/>
+    <PackageReference Include="Testcontainers.Redis"/>
+    <PackageReference Include="xunit.runner.visualstudio">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="xunit.v3"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AspireBoot.Api\AspireBoot.Api.csproj"/>
+    <ProjectReference Include="..\AspireBoot.Core\AspireBoot.Core.csproj"/>
+    <ProjectReference Include="..\AspireBoot.Infrastructure\AspireBoot.Infrastructure.csproj"/>
+    <ProjectReference Include="..\AspireBoot.Worker\AspireBoot.Worker.csproj"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit"/>
+  </ItemGroup>
+
+</Project>

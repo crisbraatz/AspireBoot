@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.NpgSql"/>
+    <PackageReference Include="AspNetCore.HealthChecks.Redis"/>
+    <PackageReference Include="AspNetCore.HealthChecks.Uris"/>
+    <PackageReference Include="AWSSDK.S3"/>
+    <PackageReference Include="MailKit"/>
+    <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore"/>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore"/>
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore"/>
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL"/>
+    <PackageReference Include="StackExchange.Redis"/>
+    <PackageReference Include="System.Security.Cryptography.Pkcs"/>
+    <PackageReference Include="WolverineFx.EntityFrameworkCore"/>
+    <PackageReference Include="WolverineFx.HealthChecks"/>
+    <PackageReference Include="WolverineFx.Postgresql"/>
+    <PackageReference Include="WolverineFx.RabbitMQ"/>
+    <PackageReference Include="WolverineFx.RuntimeCompilation"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    <ProjectReference Include="..\AspireBoot.Core\AspireBoot.Core.csproj"/>
+  </ItemGroup>
+
+
+</Project>

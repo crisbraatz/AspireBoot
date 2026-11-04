@@ -1,0 +1,48 @@
+{$API_HOST} {
+    @privateHealth path_regexp privateHealth (?i)^/(api/)?(alive|health)(/.*)?$
+    respond @privateHealth 404
+    encode zstd gzip
+
+    reverse_proxy api:8080 {
+        header_up Host {host}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+    }
+}
+
+{$APP_HOST} {
+    @privateHealth path_regexp privateHealth (?i)^/(api/)?(alive|health)(/.*)?$
+    encode zstd gzip
+    header X-Content-Type-Options nosniff
+    header Referrer-Policy no-referrer
+    header X-Frame-Options DENY
+    @runtimeConfig path /appsettings.json
+    header @runtimeConfig Cache-Control "no-store"
+    header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: https://{$OBJECT_STORAGE_HOST}; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'; require-trusted-types-for 'script'; trusted-types angular angular#bundler"
+
+    route {
+        respond @privateHealth 404
+
+        handle /api/* {
+            reverse_proxy api:8080 {
+                header_up Host {$API_HOST}
+                header_up X-Forwarded-Host {$API_HOST}
+                header_up X-Forwarded-For {remote_host}
+                header_up X-Forwarded-Proto {scheme}
+            }
+        }
+
+        handle {
+            root * /srv
+            try_files {path} /index.html
+            file_server
+        }
+    }
+}
+
+{$OBJECT_STORAGE_HOST} {
+    header X-Content-Type-Options nosniff
+    header Referrer-Policy no-referrer
+    reverse_proxy rustfs:9000
+}

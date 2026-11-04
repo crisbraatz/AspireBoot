@@ -1,0 +1,71 @@
+<section class="container-page py-10 sm:py-14">
+  <a
+    routerLink="/users"
+    class="inline-flex items-center gap-2 rounded text-sm text-muted hover:text-accent"
+    ><app-icon name="back" />{{ i18n.t('users.directory') }}</a
+  >
+  <h1 class="page-title mt-7">{{ i18n.t('users.details') }}</h1>
+  @if (saved) {
+    <div class="mt-5">
+      <app-notice>{{ i18n.t('common.saved') }}</app-notice>
+    </div>
+  }
+  @if (error()) {
+    <div class="mt-7">
+      <app-error-notice [error]="error()" [retryable]="true" (retry)="retry()" />
+    </div>
+  } @else if (loading()) {
+    <app-loading-state />
+  } @else if (user(); as profile) {
+    <article class="panel mt-8 overflow-hidden">
+      <div class="h-24 border-b border-line bg-subtle sm:h-32"></div>
+      <div class="px-6 pb-8 sm:px-9">
+        <div class="-mt-14 inline-block rounded-full border-4 border-surface bg-surface">
+          <app-user-avatar [name]="profile.name" [src]="profile.avatarUrl" size="large" />
+        </div>
+        <div class="mt-5 flex flex-wrap items-center justify-between gap-5">
+          <div class="min-w-0">
+            <h2 class="break-words text-2xl font-semibold tracking-tight">{{ profile.name }}</h2>
+            @if (profile.isAdministrator) {
+              <span
+                class="mr-2 inline-flex rounded-full border border-line px-2.5 py-1 text-xs text-accent"
+                >{{ i18n.t('users.administrator') }}</span
+              >
+            }
+            <span
+              class="inline-flex rounded-full border border-line px-2.5 py-1 text-xs"
+              [class.text-accent]="profile.isActive"
+              [class.text-muted]="!profile.isActive"
+              >{{ i18n.t(profile.isActive ? 'users.active' : 'users.inactive') }}</span
+            >
+          </div>
+          @if (current.user()?.id === profile.id) {
+            <a routerLink="/profile/edit" class="btn btn-secondary"
+              ><app-icon name="edit" />{{ i18n.t('users.edit') }}</a
+            >
+          }
+        </div>
+        @if (profile.email) {
+          <dl class="mt-8 border-t border-line pt-6">
+            <dt class="text-xs font-medium text-muted">{{ i18n.t('users.email') }}</dt>
+            <dd class="mt-2 break-all text-sm">{{ profile.email }}</dd>
+            <dd class="mt-2 text-xs text-muted">{{ i18n.t('users.emailHint') }}</dd>
+          </dl>
+        }
+        @if (current.user()?.id === profile.id) {
+          <div class="mt-8 border-t border-line pt-6">
+            <button type="button" class="btn btn-secondary" (click)="session.account()">
+              <app-icon name="shield" />{{ i18n.t('auth.account') }}
+            </button>
+            <p class="mt-2 max-w-lg text-xs leading-relaxed text-muted">
+              {{ i18n.t('auth.accountHint') }}
+            </p>
+          </div>
+        }
+      </div>
+    </article>
+    @if (current.user()?.id === profile.id) {
+      <app-list-user-sessions [userId]="profile.id" />
+    }
+  }
+</section>

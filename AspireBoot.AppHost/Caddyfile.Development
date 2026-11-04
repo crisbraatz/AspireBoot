@@ -1,0 +1,87 @@
+api.localhost:443 {
+    @privateHealth path_regexp privateHealth (?i)^/(api/)?(alive|health)(/.*)?$
+    respond @privateHealth 404
+    tls /etc/caddy/certs/localhost-cert.pem /etc/caddy/certs/localhost-key.pem
+    encode zstd gzip
+
+    reverse_proxy https://host.docker.internal:5100 {
+        header_up Host {host}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
+}
+
+app.localhost:443 {
+    @privateHealth path_regexp privateHealth (?i)^/(api/)?(alive|health)(/.*)?$
+    tls /etc/caddy/certs/localhost-cert.pem /etc/caddy/certs/localhost-key.pem
+    encode zstd gzip
+    header X-Content-Type-Options nosniff
+    header Referrer-Policy no-referrer
+    header X-Frame-Options DENY
+    header Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' blob: https://rustfs-api.localhost; connect-src 'self' wss://app.localhost; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+
+    route {
+        respond @privateHealth 404
+
+        handle /api/* {
+            reverse_proxy https://host.docker.internal:5100 {
+                header_up Host api.localhost
+                header_up X-Forwarded-Host api.localhost
+
+                transport http {
+                    tls_insecure_skip_verify
+                }
+            }
+        }
+
+        handle {
+            reverse_proxy https://host.docker.internal:4200 {
+                transport http {
+                    tls_insecure_skip_verify
+                }
+            }
+        }
+    }
+}
+
+aspire.localhost:443 {
+    tls /etc/caddy/certs/localhost-cert.pem /etc/caddy/certs/localhost-key.pem
+
+    reverse_proxy https://host.docker.internal:5000 {
+        header_up Host {host}
+        header_up X-Forwarded-Host {host}
+        header_up X-Forwarded-For {remote_host}
+        header_up X-Forwarded-Proto {scheme}
+
+        transport http {
+            tls_insecure_skip_verify
+        }
+    }
+}
+
+rabbit.localhost:443 {
+    tls /etc/caddy/certs/localhost-cert.pem /etc/caddy/certs/localhost-key.pem
+    reverse_proxy rabbitmq:15672
+}
+
+redis.localhost:443 {
+    tls /etc/caddy/certs/localhost-cert.pem /etc/caddy/certs/localhost-key.pem
+    reverse_proxy redis-commander:8081
+}
+
+rustfs-api.localhost:443 {
+    tls /etc/caddy/certs/localhost-cert.pem /etc/caddy/certs/localhost-key.pem
+    header X-Content-Type-Options nosniff
+    header Referrer-Policy no-referrer
+    reverse_proxy rustfs:9000
+}
+
+rustfs-app.localhost:443 {
+    tls /etc/caddy/certs/localhost-cert.pem /etc/caddy/certs/localhost-key.pem
+    reverse_proxy rustfs:9001
+}

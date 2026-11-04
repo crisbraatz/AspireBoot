@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <ProjectReference Include="..\AspireBoot.Core\AspireBoot.Core.csproj"/>
+    <ProjectReference Include="..\AspireBoot.Infrastructure\AspireBoot.Infrastructure.csproj"/>
+    <ProjectReference Include="..\AspireBoot.ServiceDefaults\AspireBoot.ServiceDefaults.csproj"/>
+  </ItemGroup>
+
+</Project>

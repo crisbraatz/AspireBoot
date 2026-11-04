@@ -1,0 +1,127 @@
+<section class="container-page max-w-lg py-12 sm:py-20">
+  <a
+    [routerLink]="session.authenticated() ? '/users' : '/'"
+    class="inline-flex items-center gap-2 rounded text-sm text-muted hover:text-accent"
+  >
+    <app-icon name="back" />{{ i18n.t('error.home') }}
+  </a>
+  <h1 class="page-title mt-7">{{ i18n.t(title) }}</h1>
+  <div class="mt-6">
+    <app-error-notice
+      [error]="error()"
+      [validationMessage]="mode === 'register' ? 'identity.registrationFailed' : 'error.validation'"
+    />
+  </div>
+  @if (done()) {
+    <div class="mt-6">
+      @if (mode === 'forgot-password' || mode === 'resend-confirmation') {
+        <section class="panel p-5" role="status">{{ i18n.t(completedMessage) }}</section>
+      } @else {
+        <app-notice [dismissible]="false">{{ i18n.t(completedMessage) }}</app-notice>
+      }
+    </div>
+    <a
+      routerLink="/auth/login"
+      [queryParams]="
+        mode === 'register' || mode === 'confirm-email' ? { returnUrl: '/profile/edit' } : null
+      "
+      class="btn btn-primary mt-6"
+      ><app-icon name="login" />{{ i18n.t('auth.login') }}</a
+    >
+  } @else {
+    <form [formGroup]="form" (ngSubmit)="submit()" class="panel mt-6 space-y-5 p-6 sm:p-8">
+      <fieldset [disabled]="busy()" class="space-y-5">
+        <legend class="sr-only">{{ i18n.t(title) }}</legend>
+        @if (mode === 'register') {
+          <div>
+            <label for="account-name" class="mb-2 block">{{ i18n.t('users.name') }}</label>
+            <input
+              id="account-name"
+              formControlName="name"
+              autocomplete="name"
+              maxlength="100"
+              class="input"
+              aria-describedby="account-name-error"
+              [attr.aria-invalid]="form.controls.name.touched && form.controls.name.invalid"
+            />
+            <p id="account-name-error" class="field-error" aria-live="polite">
+              @if (nameMessage(form.controls.name, null); as message) {
+                {{ i18n.t(message) }}
+              }
+            </p>
+          </div>
+        }
+        @if (!mode.startsWith('confirm-email')) {
+          <div>
+            <label for="account-email" class="mb-2 block">{{ i18n.t('users.email') }}</label>
+            <input
+              id="account-email"
+              type="email"
+              formControlName="email"
+              autocomplete="username"
+              maxlength="254"
+              class="input"
+              aria-describedby="account-email-error"
+              [attr.aria-invalid]="form.controls.email.touched && form.controls.email.invalid"
+            />
+            <p id="account-email-error" class="field-error" aria-live="polite">
+              @if (accountFieldMessage(form.controls.email, 'email'); as message) {
+                {{ i18n.t(message) }}
+              }
+            </p>
+          </div>
+        }
+        @if (['login', 'register', 'reset-password'].includes(mode)) {
+          <div>
+            <label for="account-password" class="mb-2 block">{{
+              i18n.t('identity.password')
+            }}</label>
+            <input
+              id="account-password"
+              type="password"
+              formControlName="password"
+              maxlength="128"
+              [autocomplete]="mode === 'login' ? 'current-password' : 'new-password'"
+              class="input"
+              aria-describedby="account-password-error"
+              [attr.aria-invalid]="form.controls.password.touched && form.controls.password.invalid"
+            />
+            <p id="account-password-error" class="field-error" aria-live="polite">
+              @if (accountFieldMessage(form.controls.password, 'password'); as message) {
+                {{ i18n.t(message) }}
+              }
+            </p>
+          </div>
+        }
+        @if (mode === 'login') {
+          <label class="flex items-center gap-2"
+            ><input type="checkbox" formControlName="rememberMe" />{{
+              i18n.t('identity.remember')
+            }}</label
+          >
+          <p class="text-xs text-muted">{{ i18n.t('identity.rememberHint') }}</p>
+        }
+        <button type="submit" class="btn btn-primary w-full" [disabled]="busy() || form.invalid">
+          <app-icon
+            [name]="mode === 'login' ? 'login' : mode === 'register' ? 'user-plus' : 'next'"
+          />
+          {{ i18n.t(busy() ? 'common.loading' : 'common.continue') }}
+        </button>
+      </fieldset>
+    </form>
+    <div class="mt-6 flex flex-wrap gap-4 text-sm text-accent">
+      @if (mode !== 'login') {
+        <a routerLink="/auth/login" class="inline-flex items-center gap-2"
+          ><app-icon name="login" />{{ i18n.t('auth.login') }}</a
+        >
+      }
+      @if (mode === 'login') {
+        <a routerLink="/auth/register" class="inline-flex items-center gap-2"
+          ><app-icon name="user-plus" />{{ i18n.t('auth.register') }}</a
+        >
+        <a routerLink="/auth/forgot-password">{{ i18n.t('auth.recovery') }}</a>
+        <a routerLink="/auth/resend-confirmation">{{ i18n.t('identity.resend-confirmation') }}</a>
+      }
+    </div>
+  }
+</section>

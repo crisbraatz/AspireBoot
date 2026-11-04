@@ -1,0 +1,287 @@
+<section class="container-page py-12">
+  <a
+    routerLink="/profile"
+    class="inline-flex items-center gap-2 rounded text-sm text-muted hover:text-accent"
+  >
+    <app-icon name="back" />{{ i18n.t('users.profile') }}
+  </a>
+  <h1 class="page-title mt-7">{{ i18n.t('auth.account') }}</h1>
+  <p class="mt-3 text-muted">{{ i18n.t('identity.securityHint') }}</p>
+  <div class="mt-6">
+    <app-error-notice [error]="error()" credentialMessage="identity.currentPasswordInvalid" />
+  </div>
+  @if (saved()) {
+    <div class="mt-5">
+      <app-notice>{{ i18n.t('identity.emailChangeRequested') }}</app-notice>
+    </div>
+  }
+  <form [formGroup]="emailForm" (ngSubmit)="changeEmail()" class="panel mt-8 space-y-4 p-6">
+    <h2 class="text-xl font-semibold">{{ i18n.t('identity.changeEmail') }}</h2>
+    <label for="new-email" class="block">{{ i18n.t('users.email') }}</label>
+    <input
+      id="new-email"
+      type="email"
+      formControlName="newEmail"
+      autocomplete="email"
+      maxlength="254"
+      class="input"
+      aria-describedby="new-email-error"
+      [attr.aria-invalid]="
+        emailForm.controls.newEmail.touched && emailForm.controls.newEmail.invalid
+      "
+    />
+    <p id="new-email-error" class="field-error" aria-live="polite">
+      @if (accountFieldMessage(emailForm.controls.newEmail, 'email'); as message) {
+        {{ i18n.t(message) }}
+      }
+    </p>
+    <label for="email-password" class="block">{{ i18n.t('identity.currentPassword') }}</label>
+    <input
+      id="email-password"
+      type="password"
+      formControlName="password"
+      autocomplete="current-password"
+      maxlength="128"
+      class="input"
+      aria-describedby="email-password-error"
+      [attr.aria-invalid]="
+        emailForm.controls.password.touched && emailForm.controls.password.invalid
+      "
+    />
+    <p id="email-password-error" class="field-error" aria-live="polite">
+      @if (accountFieldMessage(emailForm.controls.password, 'password'); as message) {
+        {{ i18n.t(message) }}
+      }
+    </p>
+    <button class="btn btn-primary" [disabled]="busy() || emailForm.invalid">
+      <app-icon name="mail" />{{ i18n.t('common.continue') }}
+    </button>
+  </form>
+  <form [formGroup]="passwordForm" (ngSubmit)="changePassword()" class="panel mt-8 space-y-4 p-6">
+    <h2 class="text-xl font-semibold">{{ i18n.t('identity.changePassword') }}</h2>
+    <label for="old-password" class="block">{{ i18n.t('identity.currentPassword') }}</label>
+    <input
+      id="old-password"
+      type="password"
+      formControlName="currentPassword"
+      autocomplete="current-password"
+      maxlength="128"
+      class="input"
+      aria-describedby="old-password-error"
+      [attr.aria-invalid]="
+        passwordForm.controls.currentPassword.touched &&
+        passwordForm.controls.currentPassword.invalid
+      "
+    />
+    <p id="old-password-error" class="field-error" aria-live="polite">
+      @if (accountFieldMessage(passwordForm.controls.currentPassword, 'password'); as message) {
+        {{ i18n.t(message) }}
+      }
+    </p>
+    <label for="new-password" class="block">{{ i18n.t('identity.password') }}</label>
+    <input
+      id="new-password"
+      type="password"
+      formControlName="newPassword"
+      autocomplete="new-password"
+      maxlength="128"
+      class="input"
+      aria-describedby="new-password-error"
+      [attr.aria-invalid]="
+        passwordForm.controls.newPassword.touched &&
+        (passwordForm.controls.newPassword.invalid || passwordForm.hasError('passwordUnchanged'))
+      "
+    />
+    <p id="new-password-error" class="field-error" aria-live="polite">
+      @if (newPasswordMessage(); as message) {
+        {{ i18n.t(message) }}
+      }
+    </p>
+    <button class="btn btn-primary" [disabled]="busy() || passwordForm.invalid">
+      <app-icon name="key" />{{ i18n.t('common.save') }}
+    </button>
+  </form>
+  <div class="panel mt-8 overflow-hidden">
+    <div class="p-6">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <h2 class="text-xl font-semibold">{{ i18n.t('identity.sessions') }}</h2>
+        @if (!loading() && !sessionsError()) {
+          <span class="rounded-full border border-line px-3 py-1.5 text-xs text-muted">{{
+            i18n.t('identity.sessionsTotal', { count: count() })
+          }}</span>
+        }
+      </div>
+      <app-error-notice
+        [error]="sessionsError()"
+        [retryable]="true"
+        (retry)="listUserSessions(page())"
+      />
+      @if (loading()) {
+        <p class="mt-4 text-sm text-muted" role="status">{{ i18n.t('common.loading') }}</p>
+      }
+      <ul class="mt-4 divide-y divide-line">
+        @for (item of sessions(); track item.id) {
+          <li class="flex flex-wrap items-center justify-between gap-4 py-5">
+            <div class="min-w-0 text-sm">
+              @if (item.isCurrent) {
+                <p class="font-semibold text-accent">{{ i18n.t('identity.currentSession') }}</p>
+              }
+              <app-tracked-details [trackedDetails]="item" />
+              <p>
+                {{ i18n.t('identity.sessionCreated') }}: {{ i18n.formatDate(item.createdAtUtc) }}
+              </p>
+              <p class="text-muted">
+                {{ i18n.t('identity.sessionExpires') }}: {{ i18n.formatDate(item.expiresAtUtc) }}
+              </p>
+              <p class="max-w-64 truncate font-mono text-xs text-muted">{{ item.id }}</p>
+            </div>
+            <button
+              class="btn btn-secondary"
+              [disabled]="busy() || loading()"
+              (click)="deleteSession(item.id, !!item.isCurrent)"
+            >
+              <app-icon name="logout" />{{ i18n.t('identity.endSession') }}
+            </button>
+          </li>
+        }
+      </ul>
+      @if (!loading() && !sessionsError() && !sessions().length) {
+        <p class="py-6 text-sm text-muted">{{ i18n.t('identity.sessionsEmpty') }}</p>
+      }
+      <div class="mt-4 flex justify-end border-t border-line pt-5">
+        <button
+          class="btn btn-secondary"
+          [disabled]="busy() || loading() || !!sessionsError() || count() <= 1"
+          (click)="openDeleteOtherSessionsConfirmation()"
+        >
+          <app-icon name="logout" />{{ i18n.t('identity.endOthers') }}
+        </button>
+      </div>
+    </div>
+    <app-pagination
+      [page]="page()"
+      [size]="size()"
+      [count]="count()"
+      [disabled]="busy() || loading()"
+      (pageChange)="listUserSessions($event.page, $event.size)"
+    />
+  </div>
+  <form
+    [formGroup]="deleteForm"
+    (ngSubmit)="openDeleteConfirmation()"
+    class="panel mt-8 space-y-4 p-6"
+  >
+    <h2 class="text-xl font-semibold">{{ i18n.t('identity.deleteAccount') }}</h2>
+    <p class="text-sm text-muted">{{ i18n.t('identity.deleteAccountHint') }}</p>
+    <label for="delete-password" class="block">{{ i18n.t('identity.currentPassword') }}</label>
+    <input
+      id="delete-password"
+      type="password"
+      formControlName="password"
+      autocomplete="current-password"
+      maxlength="128"
+      class="input"
+      aria-describedby="delete-password-error"
+      [attr.aria-invalid]="
+        deleteForm.controls.password.touched && deleteForm.controls.password.invalid
+      "
+    />
+    <p id="delete-password-error" class="field-error" aria-live="polite">
+      @if (accountFieldMessage(deleteForm.controls.password, 'password'); as message) {
+        {{ i18n.t(message) }}
+      }
+    </p>
+    <button class="btn btn-primary" [disabled]="busy() || deleteForm.invalid">
+      <app-icon name="trash" />{{ i18n.t('identity.deleteAccount') }}
+    </button>
+  </form>
+  <dialog
+    #deleteConfirmation
+    aria-labelledby="delete-dialog-title"
+    aria-describedby="delete-dialog-description"
+    class="m-auto w-[calc(100%_-_2rem)] max-w-lg rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl backdrop:bg-black/65 backdrop:backdrop-blur-sm"
+  >
+    <div class="p-6 sm:p-8">
+      <div class="flex items-start justify-between gap-4">
+        <span
+          class="inline-flex size-12 items-center justify-center rounded-xl bg-subtle text-accent"
+          ><app-icon name="trash"
+        /></span>
+        <button
+          type="button"
+          class="icon-button"
+          [attr.aria-label]="i18n.t('common.cancel')"
+          (click)="closeDeleteConfirmation()"
+        >
+          <app-icon name="close" />
+        </button>
+      </div>
+      <h2 id="delete-dialog-title" class="mt-5 text-2xl font-semibold tracking-tight">
+        {{ i18n.t('identity.deleteAccount') }}
+      </h2>
+      <p id="delete-dialog-description" class="mt-3 text-sm leading-relaxed text-muted">
+        {{ i18n.t('identity.confirmDeleteAccount') }}
+      </p>
+      <div class="mt-8 flex flex-wrap justify-end gap-3">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          autofocus
+          (click)="closeDeleteConfirmation()"
+        >
+          {{ i18n.t('common.cancel') }}
+        </button>
+        <button type="button" class="btn btn-primary" [disabled]="busy()" (click)="deleteUser()">
+          <app-icon name="trash" />{{ i18n.t('identity.deleteAccount') }}
+        </button>
+      </div>
+    </div>
+  </dialog>
+  <dialog
+    #deleteOtherSessionsConfirmation
+    aria-labelledby="end-others-dialog-title"
+    aria-describedby="end-others-dialog-description"
+    class="m-auto w-[calc(100%_-_2rem)] max-w-lg rounded-2xl border border-line bg-surface p-0 text-ink shadow-2xl backdrop:bg-black/65 backdrop:backdrop-blur-sm"
+  >
+    <div class="p-6 sm:p-8">
+      <div class="flex items-start justify-between gap-4">
+        <span
+          class="inline-flex size-12 items-center justify-center rounded-xl bg-subtle text-accent"
+          ><app-icon name="logout"
+        /></span>
+        <button
+          type="button"
+          class="icon-button"
+          [attr.aria-label]="i18n.t('common.cancel')"
+          (click)="closeDeleteOtherSessionsConfirmation()"
+        >
+          <app-icon name="close" />
+        </button>
+      </div>
+      <h2 id="end-others-dialog-title" class="mt-5 text-2xl font-semibold tracking-tight">
+        {{ i18n.t('identity.endOthers') }}
+      </h2>
+      <p id="end-others-dialog-description" class="mt-3 text-sm leading-relaxed text-muted">
+        {{ i18n.t('identity.confirmEndOthers') }}
+      </p>
+      <div class="mt-8 flex flex-wrap justify-end gap-3">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          autofocus
+          (click)="closeDeleteOtherSessionsConfirmation()"
+        >
+          {{ i18n.t('common.cancel') }}
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="busy()"
+          (click)="deleteOtherSessions()"
+        >
+          <app-icon name="logout" />{{ i18n.t('identity.endOthers') }}
+        </button>
+      </div>
+    </div>
+  </dialog>
+</section>
